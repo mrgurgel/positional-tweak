@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to be applied on POJOs fields which will recieve data conversion.
+ * Annotation to be applied on POJOs fields which will receive data conversion.
  * 
  * @author Márcio Gurgel (marcio.rga@gmail.com)
  *
@@ -31,7 +31,7 @@ public @interface PositionalData {
     int length() default 1;
     
     /**
-     * To be applied on fields where precision is relavant (eg. BigDecimal).
+     * To be applied on fields where precision is relevant (eg. BigDecimal).
      */
     int precision() default 0;
   

@@ -12,6 +12,7 @@ import org.magu.positionalparser.converter.ConverterPool;
 import org.magu.positionalparser.exception.PositionalParserException;
 
 /**
+ * APIs front end.
  * 
  * @author Márcio Gurgel (marcio.rga@gmail.com)
  *
@@ -26,13 +27,19 @@ public class PositionalParser {
     private Map<Integer, PositionalData> positionMapping = new TreeMap<>();
 
     /**
+     * API's <i>entry-point</i>: handles user's request.
      * 
-     * @param positional
-     * @param pojoClass
-     * @return
+     * @param positionalString 
+     *          Raw <i>positional</i> message, to be converted
+     *          
+     * @param pojoClass 
+     *          POJO's class, which will be filled by the conversion process.
+     *          <b>Important: </b> the POJO's attributes <b>MUST</b> be annotated with {@link PositionalData}
+     *          
+     * @return a instance of <i>pojoClass</i>
      * @throws PositionalParserException
      */
-    public <T> T toPojo(String positional, Class<T> pojoClass) throws PositionalParserException {
+    public <T> T toPojo(String positionalString, Class<T> pojoClass) throws PositionalParserException {
 
         try 
         {
@@ -45,15 +52,21 @@ public class PositionalParser {
                 
                 if(positionalData != null)
                 {
+                    // TODO 1: assert that lengthPosition and length are not filled at same time
+                    // TODO 2: if lengthPosition was specified, use it instead of "positionalData"
+                    // TODO 3: Make recursive calls in case multivalued lists
+                    
                     int fieldPosition = positionalData.position();
                     
                     if(!positionMapping.containsKey(fieldPosition))
                     {
-                        int fieldLength = positionalData.length();
-                        String fieldData = positional.substring(lastPositionReaded, lastPositionReaded += fieldLength);
+                        /** Find out the range of the current field and increment last readed position **/
+                        String fieldData = positionalString.substring(lastPositionReaded, lastPositionReaded += positionalData.length());
                         
                         Class<?> fieldType = field.getType();
                         Converter<?> findConverterFor = ConverterPool.findConverterFor(fieldType);
+                        
+                        /** Invokes a specifc converter for the field's type **/
                         Object convertedValue = findConverterFor.convert(fieldData, positionalData);
                         
                         Method setterMethod = pojoClass.getMethod(buildSetterMethodName(field), fieldType);
@@ -71,28 +84,21 @@ public class PositionalParser {
             
             return pojoInstance;
         } 
-        catch (InstantiationException | IllegalAccessException e) 
+        catch (InstantiationException | IllegalAccessException 
+                | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) 
         {
-            throw new PositionalParserException("It was not possible to instantiate bean", e);
-        } catch (NoSuchMethodException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (SecurityException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+            throw new PositionalParserException("There was an excepton handling the request. See original the exception.", e);
+        } 
         
-        return null;
-
     }
 
-    private String buildSetterMethodName(Field field) {
+    /**
+     * Build's a <i>setter's</i> method name, based on the field's name.
+     * @param field 
+     * @return Method's name
+     */
+    private String buildSetterMethodName(Field field) 
+    {
         String fieldName = field.getName();
         StringBuilder stringBuilder = new StringBuilder()
             .append(SET_PREFIX).append(Character.toUpperCase(fieldName.charAt(FISRT_CHARACTER_BEGIN)))

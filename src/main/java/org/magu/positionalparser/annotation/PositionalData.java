@@ -23,7 +23,7 @@ public @interface PositionalData {
     /**
      * The legth is defined by another field.
      */
-    int lengthPosition();
+    int lengthPosition() default 0;
     
     /**
      * Field's <b>length</b>.

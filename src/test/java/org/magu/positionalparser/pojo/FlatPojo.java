@@ -2,6 +2,11 @@ package org.magu.positionalparser.pojo;
 
 import org.magu.positionalparser.annotation.PositionalData;
 
+/**
+ * Flat pojo example
+ * @author Márcio Gurgel (marcio.rga@gmail.com)
+ *
+ */
 public class FlatPojo 
 {
     @PositionalData(position = 1, length = 10)

@@ -24,7 +24,7 @@ public class PositionalParserTest
     @Test
     public void testSimpleFlatConvertion() throws PositionalParserException
     {
-        FlatPojo pojo = new PositionalParser().toPojo("Nicole    Nagel     ", FlatPojo.class);
+        FlatPojo pojo = new PositionalParser().toPojo("Marcio    Gurgel    ", FlatPojo.class);
         Assert.assertNotNull(pojo);
         Assert.assertNotNull(pojo.getFirstName());
         Assert.assertNotNull(pojo.getLastName());

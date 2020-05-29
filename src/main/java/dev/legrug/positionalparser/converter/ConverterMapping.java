@@ -1,10 +1,11 @@
-package org.magu.positionalparser.converter;
+package dev.legrug.positionalparser.converter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
-import org.magu.positionalparser.converter.type.IntegerConverter;
-import org.magu.positionalparser.converter.type.StringConverter;
+import dev.legrug.positionalparser.converter.type.StringConverter;
+import dev.legrug.positionalparser.converter.type.IntegerConverter;
 
 /**
  * Register the available converter types
@@ -15,6 +16,7 @@ public class ConverterMapping
 {
 
     private static final Map<Class<?>, Converter<?>> loadedConverters = new HashMap<Class<?>, Converter<?>>();
+    private ConverterMapping() {}
     
     static
     {
@@ -22,9 +24,9 @@ public class ConverterMapping
         loadedConverters.put(Integer.class, new IntegerConverter());
     }
     
-    public static Converter<?> findConverterFor(Class<?> clazz)
+    public static Optional<Converter> byType(Class<?> clazz)
     {
-        return loadedConverters.get(clazz);
+        return Optional.ofNullable(loadedConverters.get(clazz));
     }
     
     

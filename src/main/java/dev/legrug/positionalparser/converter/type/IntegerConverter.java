@@ -1,8 +1,8 @@
-package org.magu.positionalparser.converter.type;
+package dev.legrug.positionalparser.converter.type;
 
-import org.magu.positionalparser.annotation.PositionalData;
-import org.magu.positionalparser.converter.Converter;
-import org.magu.positionalparser.exception.PositionalParserException;
+import dev.legrug.positionalparser.annotation.PositionalData;
+import dev.legrug.positionalparser.converter.Converter;
+import dev.legrug.positionalparser.exception.PositionalParserException;
 
 /**
  * Generic number conversor

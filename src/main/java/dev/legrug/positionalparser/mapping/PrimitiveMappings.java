@@ -1,4 +1,4 @@
-package org.magu.positionalparser.mapping;
+package dev.legrug.positionalparser.mapping;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +12,8 @@ public class PrimitiveMappings
 {
 
     private static final Set<Class<?>> primimitiveTypes;
+
+    private PrimitiveMappings() {}
     
     static 
     {

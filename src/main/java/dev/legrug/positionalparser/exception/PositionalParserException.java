@@ -1,4 +1,4 @@
-package org.magu.positionalparser.exception;
+package dev.legrug.positionalparser.exception;
 
 import java.text.MessageFormat;
 
@@ -9,7 +9,7 @@ import java.text.MessageFormat;
  * @author Márcio Gurgel (marcio.rga@gmail.com)
  *
  */
-public class PositionalParserException extends Exception {
+public class PositionalParserException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 

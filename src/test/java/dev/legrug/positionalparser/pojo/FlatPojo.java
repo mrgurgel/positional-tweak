@@ -1,6 +1,6 @@
-package org.magu.positionalparser.pojo;
+package dev.legrug.positionalparser.pojo;
 
-import org.magu.positionalparser.annotation.PositionalData;
+import dev.legrug.positionalparser.annotation.PositionalData;
 
 /**
  * Flat pojo example
@@ -9,10 +9,10 @@ import org.magu.positionalparser.annotation.PositionalData;
  */
 public class FlatPojo 
 {
-    @PositionalData(position = 1, length = 10)
+    @PositionalData(length = 10)
     private String firstName;
     
-    @PositionalData(position = 1, length = 10)
+    @PositionalData(length = 10)
     private String lastName;
 
     public String getFirstName() {

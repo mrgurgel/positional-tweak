@@ -12,10 +12,6 @@
 			<name>Márcio Gurgel</name>
 			<email>marcio.rga@gmail.com</email>
 		</developer>
-		<developer>
-			<name>Nicole Nagel</name>
-			<email>nnagel@gmail.com</email>
-		</developer>
 	</developers>
 
 	<dependencies>
@@ -32,8 +28,8 @@
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>

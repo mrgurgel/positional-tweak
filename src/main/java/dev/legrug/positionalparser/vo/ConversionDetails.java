@@ -1,6 +1,6 @@
-package org.magu.positionalparser.vo;
+package dev.legrug.positionalparser.vo;
 
-import org.magu.positionalparser.annotation.PositionalData;
+import dev.legrug.positionalparser.annotation.PositionalData;
 
 /**
  * Register relevant conversion data

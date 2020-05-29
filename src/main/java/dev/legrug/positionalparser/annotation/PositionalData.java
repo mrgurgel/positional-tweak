@@ -1,4 +1,4 @@
-package org.magu.positionalparser.annotation;
+package dev.legrug.positionalparser.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -15,16 +15,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PositionalData {
 
-    /**
-     * Position <i>(or identifier)</i> for a field. May be unique.
-     */
-    int position();
-    
-    /**
-     * The legth is defined by another field.
-     */
-    int lengthPosition() default 0;
-    
+
     /**
      * Field's <b>length</b>.
      */

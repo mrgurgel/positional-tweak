@@ -14,7 +14,7 @@ public class PositionalFieldTest {
 
 
     @Test
-    public void convertAField() throws NoSuchFieldException {
+    public void convertAFieldPrimitive() throws NoSuchFieldException {
         Field firstName = FlatPojo.class.getDeclaredField("firstName");
         FlatPojo currentInstance = new FlatPojo();
         new PositionalField(firstName, currentInstance, new StringBuilder("Márcio Ribeiro Gurgel do Amaral")).fillFieldValue();
@@ -23,7 +23,7 @@ public class PositionalFieldTest {
 
 
     @Test
-    public void confirmThatAFieldIsNotConvertable() throws NoSuchFieldException {
+    public void confirmThatANonSupportedFieldIsNotConvertable() throws NoSuchFieldException {
 
         Field fieldThatDoesntHaveAConversor = PojoWithAFieldThatDoesntExists.class.getDeclaredField("aNonConvertableField");
         PositionalField positionalField = new PositionalField(fieldThatDoesntHaveAConversor, new FlatPojo(), new StringBuilder("XXXXXX"));
@@ -32,7 +32,7 @@ public class PositionalFieldTest {
     }
 
     @Test
-    public void confirmThatAFieldIsConvertable() throws NoSuchFieldException {
+    public void confirmThatAPrimitiveFieldIsConvertable() throws NoSuchFieldException {
         Field firstName = FlatPojo.class.getDeclaredField("firstName");
         FlatPojo currentInstance = new FlatPojo();
         PositionalField positionalField = new PositionalField(firstName, currentInstance, new StringBuilder("Márcio Ribeiro Gurgel do Amaral"));
@@ -62,9 +62,11 @@ public class PositionalFieldTest {
         Field firstName = PojoWithList.class.getDeclaredField("listOfFlatPojos");
         PojoWithList currentInstance = new PojoWithList();
         new PositionalField(firstName, currentInstance,
-                new StringBuilder("AAAAAAAAAABBBBBBBBBBCCCCCCCCCCDDDDDDDDDDEEEEEEEEEEFFFFFFFFFF")).fillFieldValue();
+                new StringBuilder("ATTRIBUTE1ATTRIBUTE2ATTRIBUTE3ATTRIBUTE4ATTRIBUTE5ATTRIBUTE6")).fillFieldValue();
         Assert.assertEquals(3, currentInstance.getListOfFlatPojos().size());
-        Assert.assertEquals("FFFFFFFFFF", currentInstance.getListOfFlatPojos().get(2).getLastName());
+        FlatPojo lastItemOfTheList = currentInstance.getListOfFlatPojos().get(2);
+        String expectedValueForTheAttributeLastName = "ATTRIBUTE6";
+        Assert.assertEquals(expectedValueForTheAttributeLastName, lastItemOfTheList.getLastName());
     }
 
 }

@@ -1,5 +1,6 @@
 package dev.legrug.positionalparser.mapping;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,9 +22,12 @@ public class PrimitiveMappings
         primimitiveTypes.add(int.class);
         primimitiveTypes.add(long.class);
         primimitiveTypes.add(double.class);
+        primimitiveTypes.add(float.class);
         primimitiveTypes.add(Integer.class);
         primimitiveTypes.add(Long.class);
         primimitiveTypes.add(Double.class);
+        primimitiveTypes.add(String.class);
+        primimitiveTypes.add(BigDecimal.class);
     }
     
     

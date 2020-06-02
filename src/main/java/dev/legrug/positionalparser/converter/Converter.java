@@ -1,9 +1,8 @@
 package dev.legrug.positionalparser.converter;
 
-import dev.legrug.positionalparser.annotation.PositionalData;
-import dev.legrug.positionalparser.exception.PositionalParserException;
+import dev.legrug.positionalparser.parser.PositionalInfo;
 
 public interface Converter<TYPE>
 {
-    TYPE convert(String input, PositionalData annotationData) throws PositionalParserException;
+    TYPE fromPositional(String input, PositionalInfo positionalInfo);
 }

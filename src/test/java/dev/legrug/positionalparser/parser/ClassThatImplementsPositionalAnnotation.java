@@ -4,28 +4,27 @@ import dev.legrug.positionalparser.annotation.PositionalData;
 
 import java.lang.annotation.Annotation;
 
-public class PositionalDataFieldMock implements PositionalData {
-
+public class ClassThatImplementsPositionalAnnotation implements PositionalData {
 
 
     @Override
     public int length() {
-        return 0;
+        return 10;
     }
 
     @Override
     public int precision() {
-        return 0;
+        return 2;
     }
 
     @Override
     public String pattern() {
-        return null;
+        return "dd/MM/yyyy";
     }
 
     @Override
     public boolean trim() {
-        return false;
+        return true;
     }
 
     @Override

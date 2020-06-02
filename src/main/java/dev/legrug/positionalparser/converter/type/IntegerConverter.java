@@ -1,8 +1,8 @@
 package dev.legrug.positionalparser.converter.type;
 
-import dev.legrug.positionalparser.annotation.PositionalData;
 import dev.legrug.positionalparser.converter.Converter;
 import dev.legrug.positionalparser.exception.PositionalParserException;
+import dev.legrug.positionalparser.parser.PositionalInfo;
 
 /**
  * Generic number conversor
@@ -12,8 +12,7 @@ import dev.legrug.positionalparser.exception.PositionalParserException;
 public class IntegerConverter implements Converter<Integer> {
 
     @Override
-    public Integer convert(String input, PositionalData annotationData)
-            throws PositionalParserException 
+    public Integer fromPositional(String input, PositionalInfo positionalInfo)
     {
         return Integer.valueOf(input);
     }

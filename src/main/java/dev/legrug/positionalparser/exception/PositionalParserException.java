@@ -28,9 +28,10 @@ public class PositionalParserException extends RuntimeException {
      * @param message Message <i>must have variables (eg. Hello "{0}")</i>
      * @param arguments Arguments to be applied
      */
-    public PositionalParserException(String message, Object... arguments) 
+    public PositionalParserException(String message, Object... arguments)
     {
         super(MessageFormat.format(message, arguments));
     }
-    
+
+
 }

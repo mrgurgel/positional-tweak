@@ -1,11 +1,11 @@
 package dev.legrug.positionalparser.converter;
 
+import dev.legrug.positionalparser.converter.type.IntegerConverter;
+import dev.legrug.positionalparser.converter.type.StringConverter;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
-import dev.legrug.positionalparser.converter.type.StringConverter;
-import dev.legrug.positionalparser.converter.type.IntegerConverter;
 
 /**
  * Register the available converter types

@@ -1,8 +1,11 @@
 package dev.legrug.positionalparser.converter;
 
+import dev.legrug.positionalparser.converter.type.BigDecimalConverter;
 import dev.legrug.positionalparser.converter.type.IntegerConverter;
+import dev.legrug.positionalparser.converter.type.LongConverter;
 import dev.legrug.positionalparser.converter.type.StringConverter;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -22,6 +25,8 @@ public class ConverterMapping
     {
         loadedConverters.put(String.class, new StringConverter());
         loadedConverters.put(Integer.class, new IntegerConverter());
+        loadedConverters.put(Long.class, new LongConverter());
+        loadedConverters.put(BigDecimal.class, new BigDecimalConverter());
     }
     
     public static Optional<Converter> byType(Class<?> clazz)

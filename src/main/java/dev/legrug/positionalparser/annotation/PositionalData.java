@@ -17,9 +17,10 @@ public @interface PositionalData {
 
 
     /**
-     * Field's <b>length</b>.
+     * For primitive/wrapper values: Complete field lenth (include dots, dashes, etc...)
+     * For lists: the size of the list
      */
-    int length() default 1;
+    int length();
     
     /**
      * To be applied on fields where precision is relevant (eg. BigDecimal).
@@ -34,6 +35,6 @@ public @interface PositionalData {
     /**
      * Indicates if the value should recieve {@link String#trim()} function.
      */
-    boolean trim() default false;
+    boolean trim() default true;
 
 }

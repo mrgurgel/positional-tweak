@@ -18,9 +18,9 @@ public class PositionalParserException extends RuntimeException {
      * @param message Custom message
      * @param originalException Original exception (<i>caused by</i>)
      */
-    public PositionalParserException(String message, Exception originalException) 
+    public PositionalParserException(String message, Exception originalException, Object... arguments)
     {
-        super(message, originalException);
+        super(MessageFormat.format(message, arguments), originalException);
     }
 
     /**

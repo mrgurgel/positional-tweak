@@ -33,10 +33,10 @@ public class PositionalParser {
         try
         {
             T pojoInstance = pojoClass.getDeclaredConstructor().newInstance();
+            StringBuilder positionalValue = new StringBuilder(positionalString);
 
             Stream.of(pojoClass.getDeclaredFields()).forEach(field -> {
-
-                PositionalField positionalField = new PositionalField(field, pojoInstance, new StringBuilder(positionalString));
+                PositionalField positionalField = new PositionalField(field, pojoInstance, positionalValue);
                 positionalField.fillFieldValue();
 
             });

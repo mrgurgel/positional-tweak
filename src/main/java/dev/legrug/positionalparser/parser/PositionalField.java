@@ -105,7 +105,7 @@ public class PositionalField {
        }
        catch(Exception e) {
            // TODO: Fill the list
-           throw new PositionalParserException("There was an error while filling the list []", e);
+           throw new PositionalParserException("There was an error while filling the class {0}", e, classOfTheParameterizedType);
        }
 
     }

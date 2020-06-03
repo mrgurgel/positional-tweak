@@ -18,7 +18,7 @@ public class StringConverter implements Converter<String>
     @Override
     public String fromPositional(String input, PositionalInfo positionalInfo)
     {
-        return input;
+        return positionalInfo.isTrim() ? input.trim() : input;
     }
 
 }

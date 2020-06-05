@@ -1,9 +1,7 @@
 package dev.legrug.positionalparser.pojo;
 
-import dev.legrug.positionalparser.annotation.PositionalData;
+import dev.legrug.positionalparser.annotation.PositionalField;
 import lombok.*;
-
-import java.util.Objects;
 
 /**
  * Flat pojo example
@@ -16,10 +14,10 @@ import java.util.Objects;
 @Getter @Setter
 public class FlatPojo 
 {
-    @PositionalData(length = 10)
+    @PositionalField(length = 10)
     private String firstName;
     
-    @PositionalData(length = 10)
+    @PositionalField(length = 10)
     private String lastName;
 
 

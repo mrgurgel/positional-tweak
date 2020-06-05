@@ -1,9 +1,16 @@
 package dev.legrug.positionalparser.parser;
 
-import dev.legrug.positionalparser.annotation.PositionalData;
+import dev.legrug.positionalparser.annotation.PositionalEvict;
+import dev.legrug.positionalparser.annotation.PositionalField;
+import dev.legrug.positionalparser.annotation.PositionalList;
+import dev.legrug.positionalparser.annotation.PositionalMonetary;
 import dev.legrug.positionalparser.converter.Converter;
 import dev.legrug.positionalparser.converter.ConverterMapping;
 import dev.legrug.positionalparser.exception.PositionalParserException;
+import dev.legrug.positionalparser.parser.vo.PositionalDataVO;
+import dev.legrug.positionalparser.parser.vo.PositionalFieldVO;
+import dev.legrug.positionalparser.parser.vo.PositionalListVO;
+import dev.legrug.positionalparser.parser.vo.PositionalMonetaryVO;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -18,7 +25,7 @@ import java.util.stream.Stream;
 /**
  * @author Márcio Gurgel <marcio.rga@gmail.com>
  */
-public class PositionalField {
+public class PositionalFieldParser {
 
     private static final String SET_PREFIX = "set";
     private static final int FIRST_CHARACTER_END = 1;
@@ -27,17 +34,37 @@ public class PositionalField {
 
     private Field currentJavaField;
     private StringBuilder positionalValue;
-    private PositionalInfo positionalInfo;
     private Object currentInstance;
+    private PositionalDataVO positionalDataVO;
 
-    public PositionalField(Field currentJavaField, Object currentInstance, StringBuilder positionalValue) {
+    public PositionalFieldParser(Field currentJavaField, Object currentInstance, StringBuilder positionalValue) {
         this.currentJavaField = currentJavaField;
         this.positionalValue = positionalValue;
         this.currentInstance = currentInstance;
-        PositionalData annotation = currentJavaField.getAnnotation(PositionalData.class);
-        if(annotation != null)
+        this.positionalDataVO = new PositionalDataVO();
+        PositionalField positionalField = currentJavaField.getAnnotation(PositionalField.class);
+        if(positionalField != null)
         {
-            this.positionalInfo = PositionalInfo.fromAnnotaion(annotation);
+            this.positionalDataVO.setPositionalFieldVO(PositionalFieldVO.fromAnnotaion(positionalField));
+        }
+
+        extractListInfoIfAny();
+        extractMonetaryInfoIfAny();
+    }
+
+    private void extractListInfoIfAny() {
+        PositionalList positionalList = currentJavaField.getAnnotation(PositionalList.class);
+        if(positionalList != null)
+        {
+            this.positionalDataVO.setPositionalListVO(PositionalListVO.fromAnnotaion(positionalList));
+        }
+    }
+
+    private void extractMonetaryInfoIfAny() {
+        PositionalMonetary positionalMonetary = currentJavaField.getAnnotation(PositionalMonetary.class);
+        if(positionalMonetary != null)
+        {
+            this.positionalDataVO.setPositionalMonetaryVO(PositionalMonetaryVO.fromAnnotaion(positionalMonetary));
         }
     }
 
@@ -59,14 +86,14 @@ public class PositionalField {
     }
 
     private Object convertAttributeList() {
-        int listSize = positionalInfo.getLength();
-        List<Object> newList = new ArrayList<>(listSize);
+        int listOccurences = positionalDataVO.getPositionalListVO().getOccurrences();
+        List<Object> newList = new ArrayList<>(listOccurences);
         ParameterizedType parameterizedType = (ParameterizedType) currentJavaField.getGenericType();
         Class<?> classOfTheParameterizedType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
 
-        IntStream.rangeClosed(ITERATOR_START_POSITIONL, listSize).forEach(currentIndex -> {
+        IntStream.rangeClosed(ITERATOR_START_POSITIONL, listOccurences).forEach(currentIndex -> {
 
-            if(ConverterMapping.byType(currentJavaField.getType()).isPresent())
+            if(ConverterMapping.byType(classOfTheParameterizedType).isPresent())
             {
                 convertListOfPrimitiveValues(newList, classOfTheParameterizedType);
             }
@@ -97,14 +124,13 @@ public class PositionalField {
                    classOfTheParameterizedType.getDeclaredConstructor().newInstance();
 
            Stream.of(classOfTheParameterizedType.getDeclaredFields()).forEach(field -> {
-               PositionalField complexPositionalFieldInsideAList = new PositionalField(field, instanceOfTheComplexObjectFromList, positionalValue);
-               Object valueForComplexObject = complexPositionalFieldInsideAList.buildFieldValue();
-               complexPositionalFieldInsideAList.fillValue(valueForComplexObject);
+               PositionalFieldParser complexPositionalFieldParserInsideAList = new PositionalFieldParser(field, instanceOfTheComplexObjectFromList, positionalValue);
+               Object valueForComplexObject = complexPositionalFieldParserInsideAList.buildFieldValue();
+               complexPositionalFieldParserInsideAList.fillValue(valueForComplexObject);
            });
             return instanceOfTheComplexObjectFromList;
        }
        catch(Exception e) {
-           // TODO: Fill the list
            throw new PositionalParserException("There was an error while filling the class {0}", e, classOfTheParameterizedType);
        }
 
@@ -120,8 +146,8 @@ public class PositionalField {
         Optional<Converter> converter = ConverterMapping.byType(type);
         if(converter.isPresent())
         {
-            Object convertedValue = converter.get().fromPositional(positionalValue.substring(0, positionalInfo.getLength()), positionalInfo);
-            positionalValue.delete(0, positionalInfo.getLength());
+            Object convertedValue = converter.get().fromPositional(positionalValue.substring(0, positionalDataVO.getPositionalFieldVO().getLength()), positionalDataVO);
+            positionalValue.delete(0, positionalDataVO.getPositionalFieldVO().getLength());
             return convertedValue;
         }
         return null;
@@ -138,7 +164,7 @@ public class PositionalField {
     }
 
     public boolean isThisFieldMarkedForConvertion() {
-        return positionalInfo != null;
+        return currentJavaField.getAnnotation(PositionalEvict.class) == null;
     }
 
     public boolean isThisAPrimitiveValue() {

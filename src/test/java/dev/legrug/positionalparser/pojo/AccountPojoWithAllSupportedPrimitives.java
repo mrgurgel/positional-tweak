@@ -1,6 +1,7 @@
 package dev.legrug.positionalparser.pojo;
 
-import dev.legrug.positionalparser.annotation.PositionalData;
+import dev.legrug.positionalparser.annotation.PositionalField;
+import dev.legrug.positionalparser.annotation.PositionalMonetary;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -12,16 +13,17 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class AccountPojoWithAllSupportedPrimitives {
 
-    @PositionalData(length = 10)
+    @PositionalField(length = 10)
     private Long id;
 
-    @PositionalData(length = 20)
+    @PositionalField(length = 20)
     private String clientName;
 
-    @PositionalData(length = 3)
+    @PositionalField(length = 3)
     private Integer age;
 
-    @PositionalData(length = 10, precision = 2)
+    @PositionalField(length = 10)
+    @PositionalMonetary(numberOfDecimalPlaces = 2)
     private BigDecimal balance;
 
 }

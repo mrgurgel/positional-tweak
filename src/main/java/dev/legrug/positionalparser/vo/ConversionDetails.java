@@ -1,6 +1,6 @@
 package dev.legrug.positionalparser.vo;
 
-import dev.legrug.positionalparser.annotation.PositionalData;
+import dev.legrug.positionalparser.annotation.PositionalField;
 
 /**
  * Register relevant conversion data
@@ -10,7 +10,7 @@ import dev.legrug.positionalparser.annotation.PositionalData;
 public class ConversionDetails 
 {
     /** Original annotation **/
-    private PositionalData positionalData;
+    private PositionalField positionalField;
     
     /** Converted data **/
     private Object convertedValue;
@@ -18,17 +18,17 @@ public class ConversionDetails
     
     /**
      * Build a new instance with relevant information
-     * @param positionalData Annotation with descriptors
+     * @param positionalField Annotation with descriptors
      * @param convertedValue Positional converted into object
      */
-    public ConversionDetails(PositionalData positionalData, Object convertedValue) {
+    public ConversionDetails(PositionalField positionalField, Object convertedValue) {
         super();
-        this.positionalData = positionalData;
+        this.positionalField = positionalField;
         this.convertedValue = convertedValue;
     }
     
-    public PositionalData getPositionalData() {
-        return positionalData;
+    public PositionalField getPositionalField() {
+        return positionalField;
     }
     
     public Object getConvertedValue() {

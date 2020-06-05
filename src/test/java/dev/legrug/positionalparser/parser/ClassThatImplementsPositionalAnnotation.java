@@ -1,20 +1,15 @@
 package dev.legrug.positionalparser.parser;
 
-import dev.legrug.positionalparser.annotation.PositionalData;
+import dev.legrug.positionalparser.annotation.PositionalField;
 
 import java.lang.annotation.Annotation;
 
-public class ClassThatImplementsPositionalAnnotation implements PositionalData {
+public class ClassThatImplementsPositionalAnnotation implements PositionalField {
 
 
     @Override
     public int length() {
         return 10;
-    }
-
-    @Override
-    public int precision() {
-        return 2;
     }
 
     @Override
@@ -29,6 +24,6 @@ public class ClassThatImplementsPositionalAnnotation implements PositionalData {
 
     @Override
     public Class<? extends Annotation> annotationType() {
-        return PositionalData.class;
+        return PositionalField.class;
     }
 }

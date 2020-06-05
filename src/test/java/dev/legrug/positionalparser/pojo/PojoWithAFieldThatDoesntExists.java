@@ -1,10 +1,10 @@
 package dev.legrug.positionalparser.pojo;
 
-import dev.legrug.positionalparser.annotation.PositionalData;
+import dev.legrug.positionalparser.annotation.PositionalField;
 
 public class PojoWithAFieldThatDoesntExists {
 
-    @PositionalData(length = 1)
+    @PositionalField(length = 1)
     private byte[] aNonConvertableField;
 
 }

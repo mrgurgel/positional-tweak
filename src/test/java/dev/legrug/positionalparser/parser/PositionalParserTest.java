@@ -48,7 +48,4 @@ public class PositionalParserTest {
     }
 
 
-    @Test
-    public void pojoWithAListOfComplex() {
-    }
 }

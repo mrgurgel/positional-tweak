@@ -1,16 +1,10 @@
 package dev.legrug.positionalparser.parser;
 
 import dev.legrug.positionalparser.annotation.PositionalEvict;
-import dev.legrug.positionalparser.annotation.PositionalField;
-import dev.legrug.positionalparser.annotation.PositionalList;
-import dev.legrug.positionalparser.annotation.PositionalMonetary;
 import dev.legrug.positionalparser.converter.Converter;
 import dev.legrug.positionalparser.converter.ConverterMapping;
 import dev.legrug.positionalparser.exception.PositionalParserException;
-import dev.legrug.positionalparser.parser.vo.PositionalDataVO;
 import dev.legrug.positionalparser.parser.vo.PositionalFieldVO;
-import dev.legrug.positionalparser.parser.vo.PositionalListVO;
-import dev.legrug.positionalparser.parser.vo.PositionalMonetaryVO;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -35,38 +29,15 @@ public class PositionalFieldParser {
     private Field currentJavaField;
     private StringBuilder positionalValue;
     private Object currentInstance;
-    private PositionalDataVO positionalDataVO;
+    private PositionalFieldVO positionalFieldVO;
 
     public PositionalFieldParser(Field currentJavaField, Object currentInstance, StringBuilder positionalValue) {
         this.currentJavaField = currentJavaField;
         this.positionalValue = positionalValue;
         this.currentInstance = currentInstance;
-        this.positionalDataVO = new PositionalDataVO();
-        PositionalField positionalField = currentJavaField.getAnnotation(PositionalField.class);
-        if(positionalField != null)
-        {
-            this.positionalDataVO.setPositionalFieldVO(PositionalFieldVO.fromAnnotaion(positionalField));
-        }
-
-        extractListInfoIfAny();
-        extractMonetaryInfoIfAny();
+        this.positionalFieldVO = new PositionalFieldVO(currentJavaField);
     }
 
-    private void extractListInfoIfAny() {
-        PositionalList positionalList = currentJavaField.getAnnotation(PositionalList.class);
-        if(positionalList != null)
-        {
-            this.positionalDataVO.setPositionalListVO(PositionalListVO.fromAnnotaion(positionalList));
-        }
-    }
-
-    private void extractMonetaryInfoIfAny() {
-        PositionalMonetary positionalMonetary = currentJavaField.getAnnotation(PositionalMonetary.class);
-        if(positionalMonetary != null)
-        {
-            this.positionalDataVO.setPositionalMonetaryVO(PositionalMonetaryVO.fromAnnotaion(positionalMonetary));
-        }
-    }
 
     public Object buildFieldValue() {
 
@@ -86,7 +57,7 @@ public class PositionalFieldParser {
     }
 
     private Object convertAttributeList() {
-        int listOccurences = positionalDataVO.getPositionalListVO().getOccurrences();
+        int listOccurences = positionalFieldVO.getPositionalListVO().getOccurrences();
         List<Object> newList = new ArrayList<>(listOccurences);
         ParameterizedType parameterizedType = (ParameterizedType) currentJavaField.getGenericType();
         Class<?> classOfTheParameterizedType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
@@ -146,8 +117,8 @@ public class PositionalFieldParser {
         Optional<Converter> converter = ConverterMapping.byType(type);
         if(converter.isPresent())
         {
-            Object convertedValue = converter.get().fromPositional(positionalValue.substring(0, positionalDataVO.getPositionalFieldVO().getLength()), positionalDataVO);
-            positionalValue.delete(0, positionalDataVO.getPositionalFieldVO().getLength());
+            Object convertedValue = converter.get().fromPositional(positionalValue.substring(0, positionalFieldVO.getLength()), positionalFieldVO);
+            positionalValue.delete(0, positionalFieldVO.getLength());
             return convertedValue;
         }
         return null;

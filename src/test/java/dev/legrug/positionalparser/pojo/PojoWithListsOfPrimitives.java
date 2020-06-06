@@ -15,21 +15,20 @@ import java.util.List;
 @NoArgsConstructor
 public class PojoWithListsOfPrimitives {
 
-    @PositionalField(length = 2)
-    @PositionalList(occurrences = 2)
+    @PositionalField(length = 2,
+            listInfo = @PositionalList(occurrences = 2))
     private List<Long> id;
 
-    @PositionalField(length = 2)
-    @PositionalList(occurrences = 2)
+    @PositionalField(length = 2,
+            listInfo = @PositionalList(occurrences = 2))
     private List<String> clientName;
 
-    @PositionalField(length = 2)
-    @PositionalList(occurrences = 2)
+    @PositionalField(length = 2,
+            listInfo = @PositionalList(occurrences = 2))
     private List<Integer> age;
 
-    @PositionalField(length = 3)
-    @PositionalMonetary(numberOfDecimalPlaces = 0)
-    @PositionalList(occurrences = 2)
+    @PositionalField(length = 3,
+            listInfo = @PositionalList(occurrences = 2))
     private List<BigDecimal> balance;
 
 }

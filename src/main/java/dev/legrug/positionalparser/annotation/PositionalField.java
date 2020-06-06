@@ -16,7 +16,7 @@ public @interface PositionalField {
     /**
      * Complete field lenth (include dots, dashes, etc...)
      */
-    int length();
+    int length() default -1;
 
     /**
      * Pattern to be applied on field's value, useful in date conversions.
@@ -27,5 +27,9 @@ public @interface PositionalField {
      * Indicates if the value should recieve {@link String#trim()} function.
      */
     boolean trim() default true;
+
+    PositionalList listInfo() default @PositionalList;
+
+    PositionalMonetary monetaryInfo() default @PositionalMonetary;
 
 }

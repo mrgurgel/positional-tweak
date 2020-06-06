@@ -1,6 +1,7 @@
 package dev.legrug.positionalparser.pojo;
 
 import dev.legrug.positionalparser.annotation.PositionalField;
+import dev.legrug.positionalparser.annotation.PositionalList;
 import dev.legrug.positionalparser.annotation.PositionalMonetary;
 import lombok.*;
 
@@ -22,8 +23,8 @@ public class AccountPojoWithAllSupportedPrimitives {
     @PositionalField(length = 3)
     private Integer age;
 
-    @PositionalField(length = 10)
-    @PositionalMonetary(numberOfDecimalPlaces = 2)
+    @PositionalField(length = 2,
+            monetaryInfo = @PositionalMonetary(numberOfDecimalPlaces = 2))
     private BigDecimal balance;
 
 }

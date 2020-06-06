@@ -14,9 +14,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PositionalMonetary {
 
-
-
-    int numberOfDecimalPlaces();
+    int numberOfDecimalPlaces() default -1;
     String monetaryPattern() default "";
 
 }

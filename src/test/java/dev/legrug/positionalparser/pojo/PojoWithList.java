@@ -11,7 +11,8 @@ import java.util.List;
 @Setter
 public class PojoWithList {
 
-    @PositionalList(occurrences = 3)
+    @PositionalField(
+            listInfo = @PositionalList(occurrences = 3))
     private List<FlatPojo> listOfFlatPojos;
 
 }

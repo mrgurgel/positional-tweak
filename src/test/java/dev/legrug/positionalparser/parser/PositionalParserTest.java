@@ -1,6 +1,5 @@
 package dev.legrug.positionalparser.parser;
 
-import dev.legrug.positionalparser.exception.PositionalParserException;
 import dev.legrug.positionalparser.pojo.AccountPojoWithAllSupportedPrimitives;
 import dev.legrug.positionalparser.pojo.FlatPojo;
 import dev.legrug.positionalparser.pojo.PojoWithListsOfPrimitives;
@@ -11,8 +10,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static org.junit.Assert.*;
 
 public class PositionalParserTest {
 
@@ -28,8 +25,12 @@ public class PositionalParserTest {
     @Test
     public void toPojoFlatPojoWithVariousPrimitiveTypes() {
 
-        AccountPojoWithAllSupportedPrimitives accountPojoExpected = new AccountPojoWithAllSupportedPrimitives(1010L, "MARCIO GURGEL", 33, new BigDecimal("77.77"));
-        AccountPojoWithAllSupportedPrimitives accountPojoGenerated = new PositionalParser().toPojo("0000001010MARCIO GURGEL       0330000007777", AccountPojoWithAllSupportedPrimitives.class);
+        AccountPojoWithAllSupportedPrimitives accountPojoExpected =
+                new AccountPojoWithAllSupportedPrimitives(1010L, "MARCIO GURGEL", 33, new BigDecimal("77.77"));
+
+        AccountPojoWithAllSupportedPrimitives accountPojoGenerated =
+                new PositionalParser().toPojo("0000001010MARCIO GURGEL       0330000007777",
+                        AccountPojoWithAllSupportedPrimitives.class);
 
         Assert.assertEquals(accountPojoExpected, accountPojoGenerated);
     }

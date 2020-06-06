@@ -44,7 +44,7 @@ Example with collections:
 
 ```
 AccountPojoWithAllSupportedPrimitives accountPojoGenerated =
-        new PositionalParser().toPojo("0000001010MARCIO GURGEL       0330000007777",
+        new PositionalTweak().feedPojo("0000001010MARCIO GURGEL       0330000007777",
                 AccountPojoWithAllSupportedPrimitives.class);
 
 ```

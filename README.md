@@ -49,8 +49,11 @@ AccountPojoWithAllSupportedPrimitives accountPojoGenerated =
 
 ```
 
-#### 3) Your pojo attributes will be filled with the corresponding positional content
+#### 3) Your pojo attributes will be ready for usage:
 
+```
+accountPojoGenerated.getClientName() 
+```
 
 
 

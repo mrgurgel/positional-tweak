@@ -5,8 +5,10 @@
 ### Requirements
 
 a) Import this project;
+
 b) Java 8;
-c) Your POJOs, that will be annotated with positional-tweak annotations, MUST have a default constructor;
+
+c) Your POJOs, that will be annotated with positional-tweak annotations, MUST have a default constructor, and every attribute  must have the "setter" method;
 
 
 ### Steps to use:

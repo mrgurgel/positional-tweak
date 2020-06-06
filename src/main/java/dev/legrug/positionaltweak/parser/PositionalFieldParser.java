@@ -6,7 +6,6 @@ import dev.legrug.positionaltweak.converter.ConverterMapping;
 import dev.legrug.positionaltweak.exception.PositionalTweakException;
 import dev.legrug.positionaltweak.parser.vo.PositionalFieldVO;
 
-import javax.swing.text.Position;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -25,7 +24,7 @@ public class PositionalFieldParser {
     private static final String SET_PREFIX = "set";
     private static final int FIRST_CHARACTER_END = 1;
     private static final int FISRT_CHARACTER_BEGIN = 0;
-    public static final int ITERATOR_START_POSITIONL = 1;
+    public static final int ITERATOR_START_POSITIONAL = 1;
     public static final int NOT_INFORMED = -1;
 
     private Field currentJavaField;
@@ -66,7 +65,7 @@ public class PositionalFieldParser {
         ParameterizedType parameterizedType = (ParameterizedType) currentJavaField.getGenericType();
         Class<?> classOfTheParameterizedType = (Class<?>) parameterizedType.getActualTypeArguments()[0];
 
-        IntStream.rangeClosed(ITERATOR_START_POSITIONL, listOccurences).forEach(currentIndex -> {
+        IntStream.rangeClosed(ITERATOR_START_POSITIONAL, listOccurences).forEach(currentIndex -> {
 
             if(ConverterMapping.byType(classOfTheParameterizedType).isPresent())
             {

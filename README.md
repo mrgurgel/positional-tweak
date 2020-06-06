@@ -1,12 +1,12 @@
 # positional-tweak
 
-## Transform your positional string to regular Java's POJOs files. No more subtrings done by hand
+## Converts a given positional string into a instance of POJO using Java Annotations
 
 ### Requirements
 
 a) Import this project;
-
-b) Your POJOs MUST have a default constructor;
+b) Java 8;
+c) Your POJOs, that will be annotated with positional-tweak annotations, MUST have a default constructor;
 
 
 ### Steps to use:

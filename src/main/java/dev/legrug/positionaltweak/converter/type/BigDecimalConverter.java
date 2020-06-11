@@ -21,5 +21,10 @@ public class BigDecimalConverter implements Converter<BigDecimal> {
         return new BigDecimal(inputWithoutZerosOnLeft);
     }
 
+    @Override
+    public String toPositional(Object pojoFieldValue, PositionalFieldVO positionalFieldVO) {
+        return null;
+    }
+
 
 }

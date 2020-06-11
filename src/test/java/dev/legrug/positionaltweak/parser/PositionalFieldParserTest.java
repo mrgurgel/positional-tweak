@@ -1,5 +1,6 @@
 package dev.legrug.positionaltweak.parser;
 
+import dev.legrug.positionaltweak.pojo.AccountPojoWithAllSupportedPrimitives;
 import dev.legrug.positionaltweak.pojo.FlatPojo;
 import dev.legrug.positionaltweak.pojo.PojoWithList;
 import dev.legrug.positionaltweak.pojo.PojoWithAFieldThatDoesntExists;
@@ -68,4 +69,35 @@ public class PositionalFieldParserTest {
         Assert.assertEquals(expectedValueForTheAttributeLastName, lastItemOfTheList.getLastName());
     }
 
+    @Test
+    public void generatePositionalString() throws NoSuchFieldException {
+        Field firstName = FlatPojo.class.getDeclaredField("firstName");
+        FlatPojo currentInstance = new FlatPojo();
+        currentInstance.setFirstName("MARCIO GUR");
+        PositionalFieldParser positionalFieldParser = new PositionalFieldParser(firstName, currentInstance, new StringBuilder());
+        Assert.assertEquals("MARCIO GUR", positionalFieldParser.generatePositional());
+    }
+
+
+    @Test
+    public void generatePositionalLong() throws NoSuchFieldException {
+        Field longAttribute = AccountPojoWithAllSupportedPrimitives.class.getDeclaredField("id");
+        AccountPojoWithAllSupportedPrimitives currentInstance = new AccountPojoWithAllSupportedPrimitives();
+        Long expectedValue = 99999L;
+        currentInstance.setId(expectedValue);
+        PositionalFieldParser positionalFieldParser = new PositionalFieldParser(longAttribute, currentInstance, new StringBuilder());
+        Assert.assertEquals(String.valueOf(expectedValue), positionalFieldParser.generatePositional());
+    }
+
+    @Test
+    public void generatePositionalInteger() throws NoSuchFieldException {
+        Field longAttribute = AccountPojoWithAllSupportedPrimitives.class.getDeclaredField("age");
+        AccountPojoWithAllSupportedPrimitives currentInstance = new AccountPojoWithAllSupportedPrimitives();
+        Integer expectedValue = 33;
+        currentInstance.setAge(expectedValue);
+        PositionalFieldParser positionalFieldParser = new PositionalFieldParser(longAttribute, currentInstance, new StringBuilder());
+        Assert.assertEquals(String.valueOf(expectedValue), positionalFieldParser.generatePositional());
+    }
+
+    // TODO: HANDLE NULL ATTRIBUTES
 }

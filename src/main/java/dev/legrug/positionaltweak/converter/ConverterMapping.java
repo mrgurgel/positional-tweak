@@ -5,6 +5,7 @@ import dev.legrug.positionaltweak.converter.type.IntegerConverter;
 import dev.legrug.positionaltweak.converter.type.LongConverter;
 import dev.legrug.positionaltweak.converter.type.StringConverter;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;

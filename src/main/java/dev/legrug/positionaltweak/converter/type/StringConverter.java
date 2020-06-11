@@ -20,4 +20,9 @@ public class StringConverter implements Converter<String>
         return positionalFieldVO.isTrim() ? input.trim() : input;
     }
 
+    @Override
+    public String toPositional(Object pojoFieldValue, PositionalFieldVO positionalFieldVO) {
+        return pojoFieldValue.toString();
+    }
+
 }

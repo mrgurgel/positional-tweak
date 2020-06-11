@@ -52,9 +52,7 @@ public class PositionalTweakTest {
 
     @Test(expected = PositionalTweakException.class)
     public void fieldIsAnListButDontHaveTheCorrectAnnotation() {
-
-        PojoWithListAndWrongAnnotation pojoWithListAndWrongAnnotation = new PositionalTweak().feedPojo("MARCIO    GURGEL    ", PojoWithListAndWrongAnnotation.class);
-        System.out.println(pojoWithListAndWrongAnnotation);
+        new PositionalTweak().feedPojo("MARCIO    GURGEL    ", PojoWithListAndWrongAnnotation.class);
     }
 
 

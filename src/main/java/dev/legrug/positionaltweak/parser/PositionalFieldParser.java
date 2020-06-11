@@ -22,6 +22,7 @@ import java.util.stream.Stream;
 public class PositionalFieldParser {
 
     private static final String SET_PREFIX = "set";
+    private static final String GET_PREFIX = "get";
     private static final int FIRST_CHARACTER_END = 1;
     private static final int FISRT_CHARACTER_BEGIN = 0;
     public static final int ITERATOR_START_POSITIONAL = 1;
@@ -40,7 +41,7 @@ public class PositionalFieldParser {
     }
 
 
-    public Object buildFieldValue() {
+    private Object buildFieldValue() {
 
         if(isThisFieldMarkedForConvertion()) {
             if (isThisAPrimitiveValue()) {
@@ -54,6 +55,27 @@ public class PositionalFieldParser {
             }
         }
 
+        return null;
+    }
+
+    public String generatePositional() {
+
+        if(isThisAPrimitiveValue()) {
+
+            try {
+                Converter<?> converter = ConverterMapping.byType(currentJavaField.getType()).get();
+                Method setterMethod = currentInstance.getClass().getMethod(buildMethodName(currentJavaField, GET_PREFIX));
+                Object pojoFieldValue = setterMethod.invoke(currentInstance);
+
+                return converter.toPositional(pojoFieldValue, positionalFieldVO);
+            }
+            catch(IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                throw new PositionalTweakException("A error has ocurred when generating positional to the field: {0}. " +
+                        "Verify if the field has the get method", e,
+                        currentJavaField.getName());
+            }
+
+        }
         return null;
     }
 
@@ -80,8 +102,12 @@ public class PositionalFieldParser {
         return newList;
     }
 
-    private void stopProcessingIfTheOccurencesWasntInformed() {
 
+
+    private void stopProcessingIfTheOccurencesWasntInformed() {
+        if(positionalFieldVO.getPositionalListVO() == null || positionalFieldVO.getPositionalListVO().getOccurrences() == 0) {
+            throw new PositionalTweakException("To use lists, the usage of occurences attribute is mandatory");
+        }
     }
 
     private void stopProcessingIfTheLengthWasntInformed() {
@@ -140,7 +166,7 @@ public class PositionalFieldParser {
 
     private void fillValue(Object convertedValue) {
         try {
-            Method setterMethod = currentInstance.getClass().getMethod(buildSetterMethodName(currentJavaField), currentJavaField.getType());
+            Method setterMethod = currentInstance.getClass().getMethod(buildMethodName(currentJavaField, SET_PREFIX), currentJavaField.getType());
             setterMethod.invoke(currentInstance, convertedValue);
             return;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
@@ -148,11 +174,11 @@ public class PositionalFieldParser {
         }
     }
 
-    public boolean isThisFieldMarkedForConvertion() {
+    protected boolean isThisFieldMarkedForConvertion() {
         return currentJavaField.getAnnotation(PositionalEvict.class) == null;
     }
 
-    public boolean isThisAPrimitiveValue() {
+    protected boolean isThisAPrimitiveValue() {
         return ConverterMapping.byType(currentJavaField.getType()).isPresent();
     }
 
@@ -161,19 +187,16 @@ public class PositionalFieldParser {
         return type.equals(List.class);
     }
 
-    /**
-     * Build's a <i>setter's</i> method name, based on the field's name.
-     * @param field
-     * @return Method's name
-     */
-    private String buildSetterMethodName(Field field)
+
+    private String buildMethodName(Field field, String methodPrefix)
     {
         String fieldName = field.getName();
         StringBuilder stringBuilder = new StringBuilder()
-                .append(SET_PREFIX).append(Character.toUpperCase(fieldName.charAt(FISRT_CHARACTER_BEGIN)))
+                .append(methodPrefix).append(Character.toUpperCase(fieldName.charAt(FISRT_CHARACTER_BEGIN)))
                 .append(fieldName.substring(FIRST_CHARACTER_END));
         return stringBuilder.toString();
     }
+
 
 
 }

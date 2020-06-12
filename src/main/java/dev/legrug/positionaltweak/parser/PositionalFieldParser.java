@@ -63,7 +63,7 @@ public class PositionalFieldParser {
         if(isThisAPrimitiveValue()) {
 
             try {
-                Converter<?> converter = ConverterMapping.byType(currentJavaField.getType()).get();
+                Converter<? super Object> converter = ConverterMapping.byType(currentJavaField.getType()).get();
                 Method setterMethod = currentInstance.getClass().getMethod(buildMethodName(currentJavaField, GET_PREFIX));
                 Object pojoFieldValue = setterMethod.invoke(currentInstance);
 

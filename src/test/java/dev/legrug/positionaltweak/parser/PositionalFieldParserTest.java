@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 public class PositionalFieldParserTest {
@@ -97,6 +98,15 @@ public class PositionalFieldParserTest {
         currentInstance.setAge(expectedValue);
         PositionalFieldParser positionalFieldParser = new PositionalFieldParser(longAttribute, currentInstance, new StringBuilder());
         Assert.assertEquals(String.valueOf(expectedValue), positionalFieldParser.generatePositional());
+    }
+
+    @Test
+    public void generatePositionalBigDecimal() throws NoSuchFieldException {
+        Field balance = AccountPojoWithAllSupportedPrimitives.class.getDeclaredField("balance");
+        AccountPojoWithAllSupportedPrimitives currentInstance = new AccountPojoWithAllSupportedPrimitives();
+        currentInstance.setBalance(new BigDecimal("10000.00"));
+        PositionalFieldParser positionalFieldParser = new PositionalFieldParser(balance, currentInstance, new StringBuilder());
+        Assert.assertEquals("0010000.00", positionalFieldParser.generatePositional());
     }
 
     // TODO: HANDLE NULL ATTRIBUTES

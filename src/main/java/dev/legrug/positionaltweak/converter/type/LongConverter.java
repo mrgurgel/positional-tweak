@@ -11,7 +11,7 @@ public class LongConverter implements Converter<Long> {
     }
 
     @Override
-    public String toPositional(Object pojoFieldValue, PositionalFieldVO positionalFieldVO) {
+    public String toPositional(Long pojoFieldValue, PositionalFieldVO positionalFieldVO) {
         return pojoFieldValue.toString();
     }
 }

@@ -54,7 +54,6 @@ public class PositionalTweak {
                 positionalFieldParser.generatePositional();
 
             });
-
             return positionalStringValue.toString();
         }
         catch (IllegalArgumentException | SecurityException e) {

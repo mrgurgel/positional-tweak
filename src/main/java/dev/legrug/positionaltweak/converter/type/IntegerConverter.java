@@ -17,7 +17,7 @@ public class IntegerConverter implements Converter<Integer> {
     }
 
     @Override
-    public String toPositional(Object pojoFieldValue, PositionalFieldVO positionalFieldVO) {
+    public String toPositional(Integer pojoFieldValue, PositionalFieldVO positionalFieldVO) {
         return pojoFieldValue.toString();
     }
 

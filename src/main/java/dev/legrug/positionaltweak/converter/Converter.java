@@ -6,5 +6,5 @@ public interface Converter<TYPE>
 {
     TYPE fromPositional(String input, PositionalFieldVO positionalFieldVO);
 
-    String toPositional(Object pojoFieldValue, PositionalFieldVO positionalFieldVO);
+    String toPositional(TYPE pojoFieldValue, PositionalFieldVO positionalFieldVO);
 }

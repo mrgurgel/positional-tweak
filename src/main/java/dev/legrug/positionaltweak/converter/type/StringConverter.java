@@ -21,7 +21,7 @@ public class StringConverter implements Converter<String>
     }
 
     @Override
-    public String toPositional(Object pojoFieldValue, PositionalFieldVO positionalFieldVO) {
+    public String toPositional(String pojoFieldValue, PositionalFieldVO positionalFieldVO) {
         return pojoFieldValue.toString();
     }
 

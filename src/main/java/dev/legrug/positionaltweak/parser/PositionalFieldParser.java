@@ -110,6 +110,7 @@ public class PositionalFieldParser {
         }
     }
 
+
     private void stopProcessingIfTheLengthWasntInformed() {
         if(positionalFieldVO.getLength() == NOT_INFORMED) {
             throw new PositionalTweakException("The attribute length is required for {}", currentJavaField.getName());

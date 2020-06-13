@@ -1,6 +1,7 @@
 package dev.legrug.positionaltweak.parser;
 
 import dev.legrug.positionaltweak.annotation.PositionalEvict;
+import dev.legrug.positionaltweak.annotation.PositionalField;
 import dev.legrug.positionaltweak.converter.Converter;
 import dev.legrug.positionaltweak.converter.ConverterMapping;
 import dev.legrug.positionaltweak.exception.PositionalTweakException;
@@ -37,7 +38,7 @@ public class PositionalFieldParser {
         this.currentJavaField = currentJavaField;
         this.positionalValue = positionalValue;
         this.currentInstance = currentInstance;
-        this.positionalFieldVO = new PositionalFieldVO(currentJavaField);
+        this.positionalFieldVO = new PositionalFieldVO(currentJavaField.getAnnotation(PositionalField.class));
     }
 
 

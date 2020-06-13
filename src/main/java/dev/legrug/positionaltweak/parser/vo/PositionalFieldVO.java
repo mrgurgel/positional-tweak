@@ -7,8 +7,6 @@ import dev.legrug.positionaltweak.annotation.PositionalMonetary;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.lang.reflect.Field;
-
 @Getter @Setter
 public class PositionalFieldVO {
 
@@ -20,8 +18,7 @@ public class PositionalFieldVO {
     boolean trim;
 
 
-    public PositionalFieldVO(Field currentJavaField) {
-        PositionalField positionalField = currentJavaField.getAnnotation(PositionalField.class);
+    public PositionalFieldVO(PositionalField positionalField) {
         if(positionalField != null)
         {
             this.length = positionalField.length();

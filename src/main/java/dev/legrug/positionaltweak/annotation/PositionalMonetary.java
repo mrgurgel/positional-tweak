@@ -16,5 +16,7 @@ public @interface PositionalMonetary {
 
     int numberOfDecimalPlaces() default -1;
     String monetaryPattern() default "";
+    String decimalSeparator() default "";
+
 
 }

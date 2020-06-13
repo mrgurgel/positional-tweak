@@ -23,7 +23,7 @@ public class AccountPojoWithAllSupportedPrimitives {
     private Integer age;
 
     @PositionalField(length = 10,
-            monetaryInfo = @PositionalMonetary(numberOfDecimalPlaces = 2))
+            monetaryInfo = @PositionalMonetary(numberOfDecimalPlaces = 2, decimalSeparator = "."))
     private BigDecimal balance;
 
 }

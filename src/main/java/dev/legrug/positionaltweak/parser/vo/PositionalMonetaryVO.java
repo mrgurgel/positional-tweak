@@ -10,8 +10,10 @@ public class PositionalMonetaryVO {
 
     private int numberOfDecimalPlaces;
     private String monetaryPattern;
+    private String decimalSeparator = "";
 
     public static PositionalMonetaryVO fromAnnotaion(PositionalMonetary positionalMonetary) {
-        return new PositionalMonetaryVO(positionalMonetary.numberOfDecimalPlaces(), positionalMonetary.monetaryPattern());
+        return new PositionalMonetaryVO(positionalMonetary.numberOfDecimalPlaces(), positionalMonetary.monetaryPattern(),
+                positionalMonetary.decimalSeparator());
     }
 }

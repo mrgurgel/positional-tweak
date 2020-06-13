@@ -1,10 +1,7 @@
 package dev.legrug.positionaltweak.parser;
 
 import dev.legrug.positionaltweak.exception.PositionalTweakException;
-import dev.legrug.positionaltweak.pojo.AccountPojoWithAllSupportedPrimitives;
-import dev.legrug.positionaltweak.pojo.FlatPojo;
-import dev.legrug.positionaltweak.pojo.PojoWithListAndWrongAnnotation;
-import dev.legrug.positionaltweak.pojo.PojoWithListsOfPrimitives;
+import dev.legrug.positionaltweak.pojo.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -53,6 +50,11 @@ public class PositionalTweakTest {
     @Test(expected = PositionalTweakException.class)
     public void fieldIsAnListButDontHaveTheCorrectAnnotation() {
         new PositionalTweak().feedPojo("MARCIO    GURGEL    ", PojoWithListAndWrongAnnotation.class);
+    }
+
+    @Test(expected = PositionalTweakException.class)
+    public void fieldWithNoLenth() {
+        new PositionalTweak().feedPojo("MARCIO    GURGEL    ", PojoWithAttributeThatHasNoLength.class);
     }
 
 

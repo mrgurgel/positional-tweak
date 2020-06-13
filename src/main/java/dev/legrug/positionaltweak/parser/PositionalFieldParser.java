@@ -106,7 +106,7 @@ public class PositionalFieldParser {
 
 
     private void stopProcessingIfTheOccurencesWasntInformed() {
-        if(positionalFieldVO.getPositionalListVO() == null || positionalFieldVO.getPositionalListVO().getOccurrences() == 0) {
+        if(positionalFieldVO.getPositionalListVO() == null || positionalFieldVO.getPositionalListVO().getOccurrences() == NOT_INFORMED) {
             throw new PositionalTweakException("To use lists, the usage of occurences attribute is mandatory");
         }
     }
@@ -159,6 +159,7 @@ public class PositionalFieldParser {
         Optional<Converter> converter = ConverterMapping.byType(type);
         if(converter.isPresent())
         {
+            stopProcessingIfTheLengthWasntInformed();
             Object convertedValue = converter.get().fromPositional(positionalValue.substring(0, positionalFieldVO.getLength()), positionalFieldVO);
             positionalValue.delete(0, positionalFieldVO.getLength());
             return convertedValue;

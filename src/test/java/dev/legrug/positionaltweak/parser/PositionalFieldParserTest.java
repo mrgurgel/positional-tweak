@@ -84,18 +84,18 @@ public class PositionalFieldParserTest {
     public void generatePositionalLong() throws NoSuchFieldException {
         Field longAttribute = AccountPojoWithAllSupportedPrimitives.class.getDeclaredField("id");
         AccountPojoWithAllSupportedPrimitives currentInstance = new AccountPojoWithAllSupportedPrimitives();
-        Long expectedValue = 99999L;
-        currentInstance.setId(expectedValue);
+        String expectedValue = "0000099999";
+        currentInstance.setId(99999l);
         PositionalFieldParser positionalFieldParser = new PositionalFieldParser(longAttribute, currentInstance, new StringBuilder());
-        Assert.assertEquals(String.valueOf(expectedValue), positionalFieldParser.generatePositional());
+        Assert.assertEquals(expectedValue, positionalFieldParser.generatePositional());
     }
 
     @Test
     public void generatePositionalInteger() throws NoSuchFieldException {
         Field longAttribute = AccountPojoWithAllSupportedPrimitives.class.getDeclaredField("age");
         AccountPojoWithAllSupportedPrimitives currentInstance = new AccountPojoWithAllSupportedPrimitives();
-        Integer expectedValue = 33;
-        currentInstance.setAge(expectedValue);
+        String expectedValue = "033";
+        currentInstance.setAge(33);
         PositionalFieldParser positionalFieldParser = new PositionalFieldParser(longAttribute, currentInstance, new StringBuilder());
         Assert.assertEquals(String.valueOf(expectedValue), positionalFieldParser.generatePositional());
     }

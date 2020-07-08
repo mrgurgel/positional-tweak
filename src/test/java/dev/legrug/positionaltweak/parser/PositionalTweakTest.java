@@ -58,4 +58,20 @@ public class PositionalTweakTest {
     }
 
 
+    @Test
+    public void generatePositionalPojoWithPrimitives() {
+
+        AccountPojoWithAllSupportedPrimitives pojoOfPrimitives = new AccountPojoWithAllSupportedPrimitives();
+        pojoOfPrimitives.setId(99L);
+        pojoOfPrimitives.setClientName("Marcio");
+        pojoOfPrimitives.setAge(33);
+        pojoOfPrimitives.setBalance(new BigDecimal("77.77"));
+
+        String expectedPositionalString = "0000000099Marcio              0330000077.77";
+        String generatedPositional = new PositionalTweak().generatePositional(pojoOfPrimitives);
+
+        Assert.assertEquals(expectedPositionalString, generatedPositional);
+    }
+
+
 }

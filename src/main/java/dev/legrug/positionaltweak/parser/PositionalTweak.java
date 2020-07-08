@@ -52,7 +52,6 @@ public class PositionalTweak {
             Stream.of(pojoInstance.getClass().getDeclaredFields()).forEach(field -> {
                 PositionalFieldParser positionalFieldParser = new PositionalFieldParser(field, pojoInstance, positionalStringValue);
                 positionalFieldParser.generatePositional();
-
             });
             return positionalStringValue.toString();
         }

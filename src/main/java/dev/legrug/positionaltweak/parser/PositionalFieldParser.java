@@ -68,7 +68,9 @@ public class PositionalFieldParser {
                 Method setterMethod = currentInstance.getClass().getMethod(buildMethodName(currentJavaField, GET_PREFIX));
                 Object pojoFieldValue = setterMethod.invoke(currentInstance);
 
-                return converter.toPositional(pojoFieldValue, positionalFieldVO);
+                String generatedPositional = converter.toPositional(pojoFieldValue, positionalFieldVO);
+                positionalValue.append(generatedPositional);
+                return generatedPositional;
             }
             catch(IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new PositionalTweakException("A error has ocurred when generating positional to the field: {0}. " +

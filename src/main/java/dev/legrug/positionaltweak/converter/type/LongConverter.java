@@ -2,6 +2,7 @@ package dev.legrug.positionaltweak.converter.type;
 
 import dev.legrug.positionaltweak.converter.Converter;
 import dev.legrug.positionaltweak.parser.vo.PositionalFieldVO;
+import dev.legrug.positionaltweak.util.PaddingGenerator;
 
 public class LongConverter implements Converter<Long> {
 
@@ -12,6 +13,6 @@ public class LongConverter implements Converter<Long> {
 
     @Override
     public String toPositional(Long pojoFieldValue, PositionalFieldVO positionalFieldVO) {
-        return pojoFieldValue.toString();
+        return PaddingGenerator.generateZeros(positionalFieldVO,pojoFieldValue.toString()) + pojoFieldValue.toString();
     }
 }

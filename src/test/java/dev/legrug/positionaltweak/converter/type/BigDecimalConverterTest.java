@@ -34,6 +34,18 @@ public class BigDecimalConverterTest extends TestCase {
         Assert.assertEquals(new BigDecimal("10.10"), generetedValue);
     }
 
+    public void testDecimalOnly() {
+        PositionalFieldVO positionalFieldVO = new PositionalFieldVO(buildPositionalAnnotationForBigDecimalWithDecimalSepartor());
+        BigDecimal generetedValue = new BigDecimalConverter().fromPositional("00.10", positionalFieldVO);
+        Assert.assertEquals(new BigDecimal("00.10"), generetedValue);
+    }
+
+    public void testDecimalOnlyWithOneDecimal() {
+        PositionalFieldVO positionalFieldVO = new PositionalFieldVO(buildPositionalAnnotationForBigDecimalWithDecimalSepartor());
+        BigDecimal generetedValue = new BigDecimalConverter().fromPositional("00.1", positionalFieldVO);
+        Assert.assertEquals(new BigDecimal("00.1"), generetedValue);
+    }
+
 
     private PositionalField buildPositionalAnnotationForBigDecimalWithDecimalSepartor() {
         return new PositionalField(){

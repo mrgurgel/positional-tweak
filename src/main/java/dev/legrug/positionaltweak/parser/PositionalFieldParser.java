@@ -44,14 +44,12 @@ public class PositionalFieldParser {
 
     private Object buildFieldValue() {
 
-        if(isThisFieldMarkedForConvertion()) {
+        if (isThisFieldMarkedForConvertion()) {
             if (isThisAPrimitiveValue()) {
                 return convertValueAndRemoveUsedPositional(currentJavaField.getType());
-            }
-            else if(isThisFieldAList())  {
+            } else if (isThisFieldAList()) {
                 return convertAttributeList();
-            }
-            else {
+            } else {
                 return convertComplexObject(currentJavaField.getType());
             }
         }
@@ -61,22 +59,36 @@ public class PositionalFieldParser {
 
     public String generatePositional() {
 
-        if(isThisAPrimitiveValue()) {
+        if (isThisAPrimitiveValue()) {
 
             try {
                 Converter<? super Object> converter = ConverterMapping.byType(currentJavaField.getType()).get();
-                Method setterMethod = currentInstance.getClass().getMethod(buildMethodName(currentJavaField, GET_PREFIX));
-                Object pojoFieldValue = setterMethod.invoke(currentInstance);
+                Method getterMethod = currentInstance.getClass().getMethod(buildMethodName(currentJavaField, GET_PREFIX));
+                Object pojoFieldValue = getterMethod.invoke(currentInstance);
 
                 String generatedPositional = converter.toPositional(pojoFieldValue, positionalFieldVO);
                 positionalValue.append(generatedPositional);
                 return generatedPositional;
-            }
-            catch(IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new PositionalTweakException("A error has ocurred when generating positional to the field: {0}. " +
                         "Verify if the field has the get method", e,
                         currentJavaField.getName());
             }
+
+        } else {
+
+                try {
+                    Method getterMethod = currentInstance.getClass().getMethod(buildMethodName(currentJavaField, GET_PREFIX));
+                    Object complexObjectInstance = getterMethod.invoke(currentInstance);
+
+                    Stream.of(complexObjectInstance.getClass().getDeclaredFields()).forEach(complexObjectField -> {
+                        PositionalFieldParser positionalFieldParser = new PositionalFieldParser(complexObjectField, complexObjectInstance, positionalValue);
+                        positionalFieldParser.generatePositional();
+                    });
+
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                    e.printStackTrace();
+                }
 
         }
         return null;
@@ -92,13 +104,10 @@ public class PositionalFieldParser {
 
         IntStream.rangeClosed(ITERATOR_START_POSITIONAL, listOccurences).forEach(currentIndex -> {
 
-            if(ConverterMapping.byType(classOfTheParameterizedType).isPresent())
-            {
+            if (ConverterMapping.byType(classOfTheParameterizedType).isPresent()) {
                 stopProcessingIfTheLengthWasntInformed();
                 convertListOfPrimitiveValues(newList, classOfTheParameterizedType);
-            }
-            else
-            {
+            } else {
                 convertListOfComplexObjects(newList, classOfTheParameterizedType);
             }
         });
@@ -106,16 +115,15 @@ public class PositionalFieldParser {
     }
 
 
-
     private void stopProcessingIfTheOccurencesWasntInformed() {
-        if(positionalFieldVO.getPositionalListVO() == null || positionalFieldVO.getPositionalListVO().getOccurrences() == NOT_INFORMED) {
+        if (positionalFieldVO.getPositionalListVO() == null || positionalFieldVO.getPositionalListVO().getOccurrences() == NOT_INFORMED) {
             throw new PositionalTweakException("To use lists, the usage of occurences attribute is mandatory");
         }
     }
 
 
     private void stopProcessingIfTheLengthWasntInformed() {
-        if(positionalFieldVO.getLength() == NOT_INFORMED) {
+        if (positionalFieldVO.getLength() == NOT_INFORMED) {
             throw new PositionalTweakException("The attribute length is required for {}", currentJavaField.getName());
         }
     }
@@ -132,22 +140,21 @@ public class PositionalFieldParser {
         fillValue(newList);
     }
 
-    private Object convertComplexObject(Class<?> classOfTheParameterizedType)  {
-       try {
+    private Object convertComplexObject(Class<?> classOfTheParameterizedType) {
+        try {
 
-           Object instanceOfTheComplexObjectFromList =
-                   classOfTheParameterizedType.getDeclaredConstructor().newInstance();
+            Object complexObject =
+                    classOfTheParameterizedType.getDeclaredConstructor().newInstance();
 
-           Stream.of(classOfTheParameterizedType.getDeclaredFields()).forEach(field -> {
-               PositionalFieldParser complexPositionalFieldParserInsideAList = new PositionalFieldParser(field, instanceOfTheComplexObjectFromList, positionalValue);
-               Object valueForComplexObject = complexPositionalFieldParserInsideAList.buildFieldValue();
-               complexPositionalFieldParserInsideAList.fillValue(valueForComplexObject);
-           });
-            return instanceOfTheComplexObjectFromList;
-       }
-       catch(NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-           throw new PositionalTweakException("There was an error while filling the class {0}", e, classOfTheParameterizedType);
-       }
+            Stream.of(classOfTheParameterizedType.getDeclaredFields()).forEach(field -> {
+                PositionalFieldParser complexPositionalFieldParserInsideAList = new PositionalFieldParser(field, complexObject, positionalValue);
+                Object valueForComplexObject = complexPositionalFieldParserInsideAList.buildFieldValue();
+                complexPositionalFieldParserInsideAList.fillValue(valueForComplexObject);
+            });
+            return complexObject;
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new PositionalTweakException("There was an error while filling the class {0}", e, classOfTheParameterizedType);
+        }
 
     }
 
@@ -159,8 +166,7 @@ public class PositionalFieldParser {
 
     private Object convertValueAndRemoveUsedPositional(Class<?> type) {
         Optional<Converter> converter = ConverterMapping.byType(type);
-        if(converter.isPresent())
-        {
+        if (converter.isPresent()) {
             stopProcessingIfTheLengthWasntInformed();
             Object convertedValue = converter.get().fromPositional(positionalValue.substring(0, positionalFieldVO.getLength()), positionalFieldVO);
             positionalValue.delete(0, positionalFieldVO.getLength());
@@ -193,15 +199,13 @@ public class PositionalFieldParser {
     }
 
 
-    private String buildMethodName(Field field, String methodPrefix)
-    {
+    private String buildMethodName(Field field, String methodPrefix) {
         String fieldName = field.getName();
         StringBuilder stringBuilder = new StringBuilder()
                 .append(methodPrefix).append(Character.toUpperCase(fieldName.charAt(FISRT_CHARACTER_BEGIN)))
                 .append(fieldName.substring(FIRST_CHARACTER_END));
         return stringBuilder.toString();
     }
-
 
 
 }

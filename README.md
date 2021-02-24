@@ -71,5 +71,5 @@ The following fields are abble to be parsed from a positional string if they're 
 
 ### Upcoming features
 
-- Convert a given POJO to positional
 - Allow the usage of YAML as an alternative to Java Annotations. It will be useful when you dont have access to the source-code of your POJO
+- Convert list attributes into positional

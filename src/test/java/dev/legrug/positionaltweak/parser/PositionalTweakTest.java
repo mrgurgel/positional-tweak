@@ -2,6 +2,9 @@ package dev.legrug.positionaltweak.parser;
 
 import dev.legrug.positionaltweak.exception.PositionalTweakException;
 import dev.legrug.positionaltweak.pojo.*;
+import dev.legrug.positionaltweak.pojo.account.Adress;
+import dev.legrug.positionaltweak.pojo.account.Balance;
+import dev.legrug.positionaltweak.pojo.account.UserAccount;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -73,5 +76,17 @@ public class PositionalTweakTest {
         Assert.assertEquals(expectedPositionalString, generatedPositional);
     }
 
+    @Test
+    public void generatePositionalPojoWithComplexObjects() {
 
+        UserAccount userAccount = new UserAccount();
+        userAccount.setBalance(new Balance(new BigDecimal("0.10"), new BigDecimal("100000.00")));
+        userAccount.setAdress(new Adress("72900", "Brasilia"));
+
+        String generatedPositional = new PositionalTweak().generatePositional(userAccount);
+        Assert.assertEquals("0000000.100100000.0072900     Brasilia                                          ", generatedPositional);
+        // Generate the POJO back from the recently generated positional
+        UserAccount userAccountFromPositional = new PositionalTweak().feedPojo(generatedPositional, UserAccount.class);
+        Assert.assertEquals(userAccount, userAccountFromPositional);
+    }
 }

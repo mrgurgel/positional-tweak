@@ -60,38 +60,74 @@ public class PositionalFieldParser {
     public String generatePositional() {
 
         if (isThisAPrimitiveValue()) {
-
-            try {
-                Converter<? super Object> converter = ConverterMapping.byType(currentJavaField.getType()).get();
-                Method getterMethod = currentInstance.getClass().getMethod(buildMethodName(currentJavaField, GET_PREFIX));
-                Object pojoFieldValue = getterMethod.invoke(currentInstance);
-
-                String generatedPositional = converter.toPositional(pojoFieldValue, positionalFieldVO);
-                positionalValue.append(generatedPositional);
-                return generatedPositional;
-            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                throw new PositionalTweakException("A error has ocurred when generating positional to the field: {0}. " +
-                        "Verify if the field has the get method", e,
-                        currentJavaField.getName());
-            }
-
-        } else {
-
-                try {
-                    Method getterMethod = currentInstance.getClass().getMethod(buildMethodName(currentJavaField, GET_PREFIX));
-                    Object complexObjectInstance = getterMethod.invoke(currentInstance);
-
-                    Stream.of(complexObjectInstance.getClass().getDeclaredFields()).forEach(complexObjectField -> {
-                        PositionalFieldParser positionalFieldParser = new PositionalFieldParser(complexObjectField, complexObjectInstance, positionalValue);
-                        positionalFieldParser.generatePositional();
-                    });
-
-                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
-
+            return generatePositionalForPrimitive();
+        } else if (isThisFieldAList()) {
+            generatePositionalForList();
+        }
+        else {
+            generatePositionalForComplexObject();
         }
         return null;
+    }
+
+    private void generatePositionalForComplexObject() {
+        try {
+            Method getterMethod = currentInstance.getClass().getMethod(buildMethodName(currentJavaField, GET_PREFIX));
+            Object complexObjectInstance = getterMethod.invoke(currentInstance);
+
+            Stream.of(complexObjectInstance.getClass().getDeclaredFields()).forEach(complexObjectField -> {
+                PositionalFieldParser positionalFieldParser = new PositionalFieldParser(complexObjectField, complexObjectInstance, positionalValue);
+                positionalFieldParser.generatePositional();
+            });
+
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generatePositionalForList() {
+        try {
+            Method getterMethod = currentInstance.getClass().getMethod(buildMethodName(currentJavaField, GET_PREFIX));
+            List complexObjectInstance = (List) getterMethod.invoke(currentInstance);
+
+            validateMaxLimitReached(complexObjectInstance);
+            complexObjectInstance.forEach(iterationObject -> {
+
+                Stream.of(iterationObject.getClass().getDeclaredFields()).forEach(field -> {
+                    PositionalFieldParser positionalFieldParser = new PositionalFieldParser(field, iterationObject, positionalValue);
+                    positionalFieldParser.generatePositional();
+                });
+
+            });
+
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String generatePositionalForPrimitive() {
+        try {
+            Converter<? super Object> converter = ConverterMapping.byType(currentJavaField.getType()).get();
+            Method getterMethod = currentInstance.getClass().getMethod(buildMethodName(currentJavaField, GET_PREFIX));
+            Object pojoFieldValue = getterMethod.invoke(currentInstance);
+
+            String generatedPositional = converter.toPositional(pojoFieldValue, positionalFieldVO);
+            positionalValue.append(generatedPositional);
+            return generatedPositional;
+        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+            throw new PositionalTweakException("A error has ocurred when generating positional to the field: {0}. " +
+                    "Verify if the field has the get method", e,
+                    currentJavaField.getName());
+        }
+    }
+
+    private void validateMaxLimitReached(List complexObjectInstance) {
+        int occurrences = positionalFieldVO.getPositionalListVO().getOccurrences();
+        if(complexObjectInstance.size() > occurrences) {
+            throw new PositionalTweakException("The list field {} has more elements" +
+                    " than registered in the annotation. Actual: {}, registered: {}",
+                    currentJavaField, complexObjectInstance.size(), occurrences);
+        }
     }
 
     private Object convertAttributeList() {

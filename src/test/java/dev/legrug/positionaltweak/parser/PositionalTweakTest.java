@@ -5,10 +5,12 @@ import dev.legrug.positionaltweak.pojo.*;
 import dev.legrug.positionaltweak.pojo.account.Adress;
 import dev.legrug.positionaltweak.pojo.account.Balance;
 import dev.legrug.positionaltweak.pojo.account.UserAccount;
+import dev.legrug.positionaltweak.pojo.account.UserAccountWithList;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -89,4 +91,29 @@ public class PositionalTweakTest {
         UserAccount userAccountFromPositional = new PositionalTweak().feedPojo(generatedPositional, UserAccount.class);
         Assert.assertEquals(userAccount, userAccountFromPositional);
     }
+
+    @Test
+    public void generatePositionalPojoWithComplexObjectsAndList() {
+
+        UserAccountWithList userAccount = new UserAccountWithList();
+        Balance balance1 = new Balance(new BigDecimal("0.10"), new BigDecimal("100000.00"));
+        Balance balance2 = new Balance(new BigDecimal("0.77"), new BigDecimal("700000.00"));
+        ArrayList<Balance> balances = new ArrayList<>();
+        balances.add(balance1);
+        balances.add(balance2);
+        userAccount.setBalances(balances);
+
+
+        Adress brasilia = new Adress("72900", "Brasilia");
+        Adress bambui = new Adress("77777", "Bambuí");
+        ArrayList<Adress> adresses = new ArrayList<>();
+        adresses.add(brasilia);
+        adresses.add(bambui);
+        userAccount.setAdresses(adresses);
+
+        String generatedPositional = new PositionalTweak().generatePositional(userAccount);
+        System.out.println(generatedPositional);
+    }
+
+
 }

@@ -60,7 +60,7 @@ _(For more details, this project contains unit tests that are (almost?) self-exp
 #### Converting from a positional to a POJO
 
 Java fragment:
-```
+```java
 String positional = "0000000.100100000.0072900     Brasilia                                          ";
 UserAccount userAccountFromPositional = new PositionalTweak().feedPojo(positional, UserAccount.class);
 
@@ -71,7 +71,7 @@ System.out.println(userAccountFromPositional.getBalance().getCurrentBalance());
 #### Converting from POJO positional to a positional
 
 Java fragment:
-```
+```java
 UserAccount userAccount = new UserAccount();
 userAccount.setBalance(new Balance(new BigDecimal("0.10"), new BigDecimal("100000.00")));
 userAccount.setAdress(new Adress("72900", "Brasilia"));

@@ -13,63 +13,69 @@ c) Your POJOs, that will be annotated with positional-tweak annotations, MUST ha
 
 ### Steps to use:
 
-#### 1) Annotate your Java Pojos with positional-weak
+- Annotate your POJO fields, with our annotations
 
-Example with "primitive/wrapper" objects:
+UserAccount.java
+```java
+@Getter @Setter @EqualsAndHashCode @ToString
+public class UserAccount {
+
+    private Balance balance;
+    private Adress adress;
+
+}
 ```
-public class AccountPojoWithAllSupportedPrimitives {
+
+
+Balance.java
+```java
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @EqualsAndHashCode @ToString
+public class Balance {
+
+    @PositionalField(length = 10, monetaryInfo =
+        @PositionalMonetary(decimalSeparator = ".", numberOfDecimalPlaces = 2))
+    private BigDecimal currentBalance;
+
+    @PositionalField(length = 10, monetaryInfo =
+    @PositionalMonetary(decimalSeparator = ".", numberOfDecimalPlaces = 2))
+    private BigDecimal desiredBalance;
+}
+```
+
+Adress.java
+```java
+@ToString @EqualsAndHashCode @AllArgsConstructor @NoArgsConstructor @Setter @Getter
+public class Adress {
 
     @PositionalField(length = 10)
-    private Long id;
-
-    @PositionalField(length = 20)
-    private String clientName;
-
-    @PositionalField(length = 3)
-    private Integer age;
-
-    @PositionalField(length = 10,
-            monetaryInfo = @PositionalMonetary(numberOfDecimalPlaces = 2))
-    private BigDecimal balance;
+    private String zip;
+    @PositionalField(length = 50)
+    private String location;
+}
 
 ```
 
-Example with collections:
-```
-    @PositionalField(length = 2,
-            listInfo = @PositionalList(occurrences = 2))
-    private List<Integer> age;
+_(For more details, this project contains unit tests that are (almost?) self-explanatory)_
 
-```
+#### Converting from a positional to a POJO
 
-#### 2) Call the positional-tweak engine informing your positional string and the class that represents the string
-
+Java fragment:
 ```
-AccountPojoWithAllSupportedPrimitives accountPojoGenerated =
-        new PositionalTweak().feedPojo("0000001010MARCIO GURGEL       0330000007777",
-                AccountPojoWithAllSupportedPrimitives.class);
+String positional = "0000000.100100000.0072900     Brasilia                                          ";
+UserAccount userAccountFromPositional = new PositionalTweak().feedPojo(positional, UserAccount.class);
+
+System.out.println(userAccountFromPositional.getBalance().getCurrentBalance());
 
 ```
 
-#### 3) Your pojo attributes will be ready for usage:
+#### Converting from POJO positional to a positional
 
+Java fragment:
 ```
-System.out.println(accountPojoGenerated.getClientName())
--- Result: MARCIO GURGEL
+UserAccount userAccount = new UserAccount();
+userAccount.setBalance(new Balance(new BigDecimal("0.10"), new BigDecimal("100000.00")));
+userAccount.setAdress(new Adress("72900", "Brasilia"));
+
+String generatedPositional = new PositionalTweak().generatePositional(userAccount);
+System.out.println(generatedPositional);
 ```
-
-
-### Supported "primitive" fields:
-
-The following fields are abble to be parsed from a positional string if they're used inside your java POJO or as a `java.util.List` content.
-
-- java.lang.String;
-- java.lang.Long;
-- java.lang.Integer;
-- java.math.BigDecimal;
-
-
-### Upcoming features
-
-- Allow the usage of YAML as an alternative to Java Annotations. It will be useful when you dont have access to the source-code of your POJO
-- Convert list attributes into positional

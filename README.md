@@ -65,7 +65,7 @@ String positional = "0000000.100100000.0072900     Brasilia                     
 UserAccount userAccountFromPositional = new PositionalTweak().feedPojo(positional, UserAccount.class);
 
 System.out.println(userAccountFromPositional.getBalance().getCurrentBalance());
-
+// Output: 0.10
 ```
 
 #### Converting from POJO positional to a positional
@@ -78,4 +78,6 @@ userAccount.setAdress(new Adress("72900", "Brasilia"));
 
 String generatedPositional = new PositionalTweak().generatePositional(userAccount);
 System.out.println(generatedPositional);
+
+// Output: "0000000.100100000.0072900     Brasilia                                          "
 ```

@@ -16,11 +16,11 @@ import java.util.Optional;
  * @author Márcio Gurgel (marcio.rga@gmail.com)
  *
  */
-public class ConverterMapping 
+public class PrimitiveFieldsElegibleForConvertion
 {
 
     private static final Map<Class<?>, Converter<?>> loadedConverters = new HashMap<Class<?>, Converter<?>>();
-    private ConverterMapping() {}
+    private PrimitiveFieldsElegibleForConvertion() {}
     
     static
     {

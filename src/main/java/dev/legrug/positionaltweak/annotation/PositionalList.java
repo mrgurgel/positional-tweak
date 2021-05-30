@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * @author Márcio Gurgel (marcio.rga@gmail.com)
  */
-@Target(ElementType.FIELD)
+@Target(ElementType.ANNOTATION_TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PositionalList {
 

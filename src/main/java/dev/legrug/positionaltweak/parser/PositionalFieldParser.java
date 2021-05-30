@@ -3,7 +3,7 @@ package dev.legrug.positionaltweak.parser;
 import dev.legrug.positionaltweak.annotation.PositionalEvict;
 import dev.legrug.positionaltweak.annotation.PositionalField;
 import dev.legrug.positionaltweak.converter.Converter;
-import dev.legrug.positionaltweak.converter.ConverterMapping;
+import dev.legrug.positionaltweak.converter.PrimitiveFieldsElegibleForConvertion;
 import dev.legrug.positionaltweak.exception.PositionalTweakException;
 import dev.legrug.positionaltweak.parser.vo.PositionalFieldVO;
 
@@ -93,11 +93,17 @@ public class PositionalFieldParser {
             validateMaxLimitReached(complexObjectInstance);
             complexObjectInstance.forEach(iterationObject -> {
 
-                Stream.of(iterationObject.getClass().getDeclaredFields()).forEach(field -> {
-                    PositionalFieldParser positionalFieldParser = new PositionalFieldParser(field, iterationObject, positionalValue);
-                    positionalFieldParser.generatePositional();
-                });
-
+                Class<?> type = iterationObject.getClass();
+                if(PrimitiveFieldsElegibleForConvertion.byType(type).isPresent()) {
+                    Converter<? super Object> converter = PrimitiveFieldsElegibleForConvertion.byType(type).get();
+                    String primitiveFieldFromListPrepared = converter.toPositional(iterationObject, positionalFieldVO);
+                    positionalValue.append(primitiveFieldFromListPrepared);
+                }else {
+                    Stream.of(iterationObject.getClass().getDeclaredFields()).forEach(field -> {
+                        PositionalFieldParser positionalFieldParser = new PositionalFieldParser(field, iterationObject, positionalValue);
+                        positionalFieldParser.generatePositional();
+                    });
+                }
             });
 
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
@@ -107,7 +113,7 @@ public class PositionalFieldParser {
 
     private String generatePositionalForPrimitive() {
         try {
-            Converter<? super Object> converter = ConverterMapping.byType(currentJavaField.getType()).get();
+            Converter<? super Object> converter = PrimitiveFieldsElegibleForConvertion.byType(currentJavaField.getType()).get();
             Method getterMethod = currentInstance.getClass().getMethod(buildMethodName(currentJavaField, GET_PREFIX));
             Object pojoFieldValue = getterMethod.invoke(currentInstance);
 
@@ -140,7 +146,7 @@ public class PositionalFieldParser {
 
         IntStream.rangeClosed(ITERATOR_START_POSITIONAL, listOccurences).forEach(currentIndex -> {
 
-            if (ConverterMapping.byType(classOfTheParameterizedType).isPresent()) {
+            if (PrimitiveFieldsElegibleForConvertion.byType(classOfTheParameterizedType).isPresent()) {
                 stopProcessingIfTheLengthWasntInformed();
                 convertListOfPrimitiveValues(newList, classOfTheParameterizedType);
             } else {
@@ -201,7 +207,7 @@ public class PositionalFieldParser {
 
 
     private Object convertValueAndRemoveUsedPositional(Class<?> type) {
-        Optional<Converter> converter = ConverterMapping.byType(type);
+        Optional<Converter> converter = PrimitiveFieldsElegibleForConvertion.byType(type);
         if (converter.isPresent()) {
             stopProcessingIfTheLengthWasntInformed();
             Object convertedValue = converter.get().fromPositional(positionalValue.substring(0, positionalFieldVO.getLength()), positionalFieldVO);
@@ -226,7 +232,7 @@ public class PositionalFieldParser {
     }
 
     protected boolean isThisAPrimitiveValue() {
-        return ConverterMapping.byType(currentJavaField.getType()).isPresent();
+        return PrimitiveFieldsElegibleForConvertion.byType(currentJavaField.getType()).isPresent();
     }
 
     protected boolean isThisFieldAList() {

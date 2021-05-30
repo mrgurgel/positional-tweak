@@ -2,6 +2,10 @@
 
 ## Converts a given positional string into a instance of POJO using Java Annotations
 
+## How it works:
+![Positional tweak](https://legrug.dev/misc-gifs/positional.gif)
+
+
 ### Requirements
 
 a) Import this project;

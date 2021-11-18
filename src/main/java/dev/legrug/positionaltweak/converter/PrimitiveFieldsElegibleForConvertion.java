@@ -1,12 +1,10 @@
 package dev.legrug.positionaltweak.converter;
 
-import dev.legrug.positionaltweak.converter.type.BigDecimalConverter;
-import dev.legrug.positionaltweak.converter.type.IntegerConverter;
-import dev.legrug.positionaltweak.converter.type.LongConverter;
-import dev.legrug.positionaltweak.converter.type.StringConverter;
+import dev.legrug.positionaltweak.converter.type.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -27,6 +25,7 @@ public class PrimitiveFieldsElegibleForConvertion
         loadedConverters.put(String.class, new StringConverter());
         loadedConverters.put(Integer.class, new IntegerConverter());
         loadedConverters.put(Long.class, new LongConverter());
+        loadedConverters.put(Date.class, new DateConverter());
         loadedConverters.put(BigDecimal.class, new BigDecimalConverter());
     }
     

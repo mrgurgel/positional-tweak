@@ -115,5 +115,21 @@ public class PositionalTweakTest {
         System.out.println(generatedPositional);
     }
 
+    @Test
+    public void testDateConvertionToPositional() {
 
+        PojoWithADate pojoWithADate = new PojoWithADate();
+        String generatedPositional = new PositionalTweak().generatePositional(pojoWithADate);
+        System.out.println(generatedPositional);
+        Assert.assertNotNull(generatedPositional);
+    }
+
+    @Test
+    public void testDateConvertionToObject() {
+
+        PojoWithADate pojoWithADate = new PositionalTweak().feedPojo("20211118",PojoWithADate.class);
+        System.out.println(pojoWithADate.getSomeRandomDate());
+        Assert.assertNotNull(pojoWithADate);
+    }
+    
 }

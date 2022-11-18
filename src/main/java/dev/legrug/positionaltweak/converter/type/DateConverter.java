@@ -26,7 +26,7 @@ public class DateConverter implements Converter<Date> {
     @Override public String toPositional(Date pojoFieldValue, PositionalFieldVO positionalFieldVO)
     {
         checkIfThereIsPattern(positionalFieldVO);
-        return new SimpleDateFormat(positionalFieldVO.getPattern()).format(new Date());
+        return new SimpleDateFormat(positionalFieldVO.getPattern()).format(pojoFieldValue);
     }
 
     private void checkIfThereIsPattern(PositionalFieldVO positionalFieldVO)

@@ -26,6 +26,8 @@ public class PrimitiveFieldsElegibleForConvertion
         loadedConverters.put(Integer.class, new IntegerConverter());
         loadedConverters.put(Long.class, new LongConverter());
         loadedConverters.put(Date.class, new DateConverter());
+        loadedConverters.put(LocalDateConverter.class, new LocalDateConverter());
+        loadedConverters.put(LocalDateTimeConverter.class, new LocalDateTimeConverter());
         loadedConverters.put(BigDecimal.class, new BigDecimalConverter());
     }
     

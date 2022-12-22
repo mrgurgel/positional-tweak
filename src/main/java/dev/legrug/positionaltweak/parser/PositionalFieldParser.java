@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * @author Marcio Gurgel <marcio.rga@gmail.com>
+ * @author Márcio Gurgel <marcio.rga@gmail.com>
  */
 public class PositionalFieldParser {
 

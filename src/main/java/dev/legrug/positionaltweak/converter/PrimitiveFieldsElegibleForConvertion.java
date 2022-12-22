@@ -11,7 +11,7 @@ import java.util.Optional;
 
 /**
  * Register the available converter types
- * @author Marcio Gurgel (marcio.rga@gmail.com)
+ * @author Márcio Gurgel (marcio.rga@gmail.com)
  *
  */
 public class PrimitiveFieldsElegibleForConvertion

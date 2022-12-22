@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  *
- * @author Marcio Gurgel (marcio.rga@gmail.com)
+ * @author Márcio Gurgel (marcio.rga@gmail.com)
  *
  */
 @Target(ElementType.ANNOTATION_TYPE)

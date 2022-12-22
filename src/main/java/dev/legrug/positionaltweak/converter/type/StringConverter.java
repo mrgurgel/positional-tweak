@@ -6,7 +6,7 @@ import dev.legrug.positionaltweak.util.PaddingGenerator;
 
 /**
  * Converter for annotated attributes which has <i>String</i> type
- * @author Marcio Gurgel (marcio.rga@gmail.com)
+ * @author Márcio Gurgel (marcio.rga@gmail.com)
  *
  */
 public class StringConverter implements Converter<String>

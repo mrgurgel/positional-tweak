@@ -15,10 +15,10 @@ public class BigDecimalConverter implements Converter<BigDecimal> {
     public static final int VALUE_IS_DECIMAL_ONLY = 0;
 
     @Override
-    public BigDecimal fromPositional(String input, PositionalFieldVO positionalFieldVO) {
+    public BigDecimal fromPositional(String rawInput, PositionalFieldVO positionalFieldVO) {
         PositionalMonetaryVO positionalMonetaryVO = positionalFieldVO.getPositionalMonetaryVO();
-        String rawInput = input
-                .replaceAll(REGEX_THAT_THREATS_ZERO_ON_LEFT, "");
+//        String rawInput = input
+//                .replaceAll(REGEX_THAT_THREATS_ZERO_ON_LEFT, "");
 
 
         int numberOfDecimalPlaces = positionalMonetaryVO.getNumberOfDecimalPlaces();
@@ -37,10 +37,10 @@ public class BigDecimalConverter implements Converter<BigDecimal> {
     }
 
     private int identifyPositionToInsertTheDot(String rawInput, int numberOfDecimalPlaces) {
-        if (rawInput.length() <= numberOfDecimalPlaces) {
-            return VALUE_IS_DECIMAL_ONLY;
-        }
-        return rawInput.length() - numberOfDecimalPlaces;
+//        if (rawInput.length() <= numberOfDecimalPlaces) {
+//            return VALUE_IS_DECIMAL_ONLY;
+//        }
+        return Math.abs(numberOfDecimalPlaces - rawInput.length());
     }
 
     private String insertDotAsDecimalSeparator(PositionalMonetaryVO positionalMonetaryVO, String inputWithoutZerosOnLeft, int positionToSetTheDot) {

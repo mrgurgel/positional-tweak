@@ -81,4 +81,18 @@ public class BigDecimalMonetaryTest {
         Assert.assertTrue(money.compareTo(bigDecimalExample.getMoney()) == 0);
 
     }
+
+    @Test
+    public void testToPositional6() {
+        BigDecimalExample pojoInstance = new BigDecimalExample();
+        BigDecimal money = new BigDecimal("0.01");
+        pojoInstance.setMoney(money);
+        String generatedString = new PositionalTweak().generatePositional(pojoInstance);
+
+        Assert.assertEquals("000000000000001", generatedString);
+
+        BigDecimalExample bigDecimalExample = new PositionalTweak().feedPojo(generatedString, BigDecimalExample.class);
+        Assert.assertTrue(money.compareTo(bigDecimalExample.getMoney()) == 0);
+
+    }
 }

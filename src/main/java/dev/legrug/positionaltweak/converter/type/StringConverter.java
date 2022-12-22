@@ -23,6 +23,9 @@ public class StringConverter implements Converter<String>
 
     @Override
     public String toPositional(String pojoFieldValue, PositionalFieldVO positionalFieldVO) {
+        if(pojoFieldValue == null){
+            pojoFieldValue = " ";
+        }
         return pojoFieldValue + PaddingGenerator.generateBlankSpaces(positionalFieldVO, pojoFieldValue);
     }
 

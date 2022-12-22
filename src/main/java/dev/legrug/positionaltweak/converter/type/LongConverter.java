@@ -13,6 +13,9 @@ public class LongConverter implements Converter<Long> {
 
     @Override
     public String toPositional(Long pojoFieldValue, PositionalFieldVO positionalFieldVO) {
-        return PaddingGenerator.generateZeros(positionalFieldVO,pojoFieldValue.toString()) + pojoFieldValue.toString();
+        if(pojoFieldValue == null) {
+            pojoFieldValue = 0L;
+        }
+        return PaddingGenerator.generateZeros(positionalFieldVO,pojoFieldValue.toString()) + pojoFieldValue;
     }
 }

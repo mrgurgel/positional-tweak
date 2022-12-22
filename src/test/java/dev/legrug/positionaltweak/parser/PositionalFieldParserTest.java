@@ -110,4 +110,12 @@ public class PositionalFieldParserTest {
     }
 
     // TODO: HANDLE NULL ATTRIBUTES
+
+    @Test
+    public void testNullValues() throws NoSuchFieldException {
+
+        AccountPojoWithAllSupportedPrimitives accountPojoWithAllSupportedPrimitives = new AccountPojoWithAllSupportedPrimitives();
+        String positional = new PositionalTweak().generatePositional(accountPojoWithAllSupportedPrimitives);
+        Assert.assertEquals("0000000000                    0000000000.00", positional);
+    }
 }

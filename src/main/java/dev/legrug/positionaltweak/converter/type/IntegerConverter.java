@@ -19,6 +19,9 @@ public class IntegerConverter implements Converter<Integer> {
 
     @Override
     public String toPositional(Integer pojoFieldValue, PositionalFieldVO positionalFieldVO) {
+        if(pojoFieldValue == null) {
+            pojoFieldValue = 0;
+        }
         return PaddingGenerator.generateZeros(positionalFieldVO,pojoFieldValue.toString()) + pojoFieldValue.toString();
     }
 

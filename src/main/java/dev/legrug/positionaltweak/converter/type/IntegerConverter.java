@@ -6,7 +6,7 @@ import dev.legrug.positionaltweak.util.PaddingGenerator;
 
 /**
  * Generic number conversor
- * @author Márcio Gurgel (marcio.rga@gmail.com)
+ * @author Marcio Gurgel (marcio.rga@gmail.com)
  *
  */
 public class IntegerConverter implements Converter<Integer> {

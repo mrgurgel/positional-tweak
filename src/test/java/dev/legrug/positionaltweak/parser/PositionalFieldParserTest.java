@@ -18,8 +18,8 @@ public class PositionalFieldParserTest {
     public void convertAFieldPrimitive() throws NoSuchFieldException {
         Field firstName = FlatPojo.class.getDeclaredField("firstName");
         FlatPojo currentInstance = new FlatPojo();
-        new PositionalFieldParser(firstName, currentInstance, new StringBuilder("Márcio Ribeiro Gurgel do Amaral")).fillFieldValue();
-        Assert.assertEquals("Márcio Rib", currentInstance.getFirstName());
+        new PositionalFieldParser(firstName, currentInstance, new StringBuilder("Marcio Ribeiro Gurgel do Amaral")).fillFieldValue();
+        Assert.assertEquals("Marcio Rib", currentInstance.getFirstName());
     }
 
 
@@ -36,7 +36,7 @@ public class PositionalFieldParserTest {
     public void confirmThatAPrimitiveFieldIsConvertable() throws NoSuchFieldException {
         Field firstName = FlatPojo.class.getDeclaredField("firstName");
         FlatPojo currentInstance = new FlatPojo();
-        PositionalFieldParser positionalFieldParser = new PositionalFieldParser(firstName, currentInstance, new StringBuilder("Márcio Ribeiro Gurgel do Amaral"));
+        PositionalFieldParser positionalFieldParser = new PositionalFieldParser(firstName, currentInstance, new StringBuilder("Marcio Ribeiro Gurgel do Amaral"));
         Assert.assertTrue(positionalFieldParser.isThisAPrimitiveValue());
 
     }

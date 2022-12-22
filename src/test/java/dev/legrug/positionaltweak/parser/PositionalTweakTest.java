@@ -105,7 +105,7 @@ public class PositionalTweakTest {
 
 
         Adress brasilia = new Adress("72900", "Brasilia");
-        Adress bambui = new Adress("77777", "Bambuí");
+        Adress bambui = new Adress("77777", "Bambui");
         ArrayList<Adress> adresses = new ArrayList<>();
         adresses.add(brasilia);
         adresses.add(bambui);

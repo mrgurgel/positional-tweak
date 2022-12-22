@@ -6,7 +6,7 @@ import java.text.MessageFormat;
  * <i>Positional parser</i> exception's.<br>
  * Used to encapsulate miscellaneous exceptions.
  * 
- * @author Márcio Gurgel (marcio.rga@gmail.com)
+ * @author Marcio Gurgel (marcio.rga@gmail.com)
  *
  */
 public class PositionalTweakException extends RuntimeException {

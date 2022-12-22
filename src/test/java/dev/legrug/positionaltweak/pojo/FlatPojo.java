@@ -5,7 +5,7 @@ import lombok.*;
 
 /**
  * Flat pojo example
- * @author Márcio Gurgel (marcio.rga@gmail.com)
+ * @author Marcio Gurgel (marcio.rga@gmail.com)
  *
  */
 @AllArgsConstructor

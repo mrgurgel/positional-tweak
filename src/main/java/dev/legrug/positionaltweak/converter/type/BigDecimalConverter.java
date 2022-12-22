@@ -18,40 +18,44 @@ public class BigDecimalConverter implements Converter<BigDecimal> {
     public BigDecimal fromPositional(String input, PositionalFieldVO positionalFieldVO) {
         PositionalMonetaryVO positionalMonetaryVO = positionalFieldVO.getPositionalMonetaryVO();
         String rawInput = input
-                .replaceAll(REGEX_THAT_THREATS_ZERO_ON_LEFT, "")
-                .replace(positionalMonetaryVO.getDecimalSeparator(), "");
+                .replaceAll(REGEX_THAT_THREATS_ZERO_ON_LEFT, "");
+
 
         int numberOfDecimalPlaces = positionalMonetaryVO.getNumberOfDecimalPlaces();
         if (numberOfDecimalPlaces != DECIMAL_NOT_INFORMED) {
-            String valueWithSeparator = insertDotAsDecimalSeparator(rawInput, identifyPositionToInsertTheDot(rawInput, numberOfDecimalPlaces));
+            if (positionalMonetaryVO.getDecimalSeparator().equals(".")) {
+                rawInput = rawInput.replaceAll("\\.", ""); // and we remove any other character
+            } else {
+                rawInput = rawInput.replace((positionalMonetaryVO.getDecimalSeparator()), ""); // and we remove any other character
+            }
+
+            String valueWithSeparator = insertDotAsDecimalSeparator(positionalMonetaryVO, rawInput,
+                    identifyPositionToInsertTheDot(rawInput, numberOfDecimalPlaces));
             return new BigDecimal(valueWithSeparator);
         }
         return new BigDecimal(rawInput);
     }
 
     private int identifyPositionToInsertTheDot(String rawInput, int numberOfDecimalPlaces) {
-        if(rawInput.length() <= numberOfDecimalPlaces)
-        {
+        if (rawInput.length() <= numberOfDecimalPlaces) {
             return VALUE_IS_DECIMAL_ONLY;
         }
         return rawInput.length() - numberOfDecimalPlaces;
     }
 
-    private String insertDotAsDecimalSeparator(String inputWithoutZerosOnLeft, int positionToSetTheDot) {
+    private String insertDotAsDecimalSeparator(PositionalMonetaryVO positionalMonetaryVO, String inputWithoutZerosOnLeft, int positionToSetTheDot) {
+
         return inputWithoutZerosOnLeft
                 .replaceAll("^(.{" + positionToSetTheDot + "})", "$1" + ".");
     }
 
     @Override
     public String toPositional(BigDecimal pojoFieldValue, PositionalFieldVO positionalFieldVO) {
-        String rawPojoValueAsString = pojoFieldValue.toString()
+        String rawPojoValueAsString = pojoFieldValue.setScale(positionalFieldVO.getPositionalMonetaryVO().getNumberOfDecimalPlaces()).toPlainString()
                 .replace(DEFAULT_DECIMA_SEPARATOR_WHEN_TO_STRING, positionalFieldVO.getPositionalMonetaryVO().getDecimalSeparator());
-        String correctNumberOfZeros = PaddingGenerator.generateZeros(positionalFieldVO, rawPojoValueAsString);
-        return correctNumberOfZeros + rawPojoValueAsString;
+        String numberOfZerosBefore = PaddingGenerator.generateZeros(positionalFieldVO, rawPojoValueAsString);
+        return numberOfZerosBefore + rawPojoValueAsString;
     }
-
-
-
 
 
 }

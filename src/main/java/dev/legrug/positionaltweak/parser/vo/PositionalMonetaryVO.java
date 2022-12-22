@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public class PositionalMonetaryVO {
 
-    private int numberOfDecimalPlaces;
+    private int numberOfDecimalPlaces = 0;
     private String monetaryPattern;
     private String decimalSeparator = "";
 

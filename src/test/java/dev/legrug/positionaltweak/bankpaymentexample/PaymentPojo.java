@@ -15,7 +15,7 @@ public class PaymentPojo {
     @PositionalField(length = 20)
     private String clientName;
 
-    @PositionalField(length = 10, monetaryInfo = @PositionalMonetary(decimalSeparator = "."))
+    @PositionalField(length = 10, monetaryInfo = @PositionalMonetary(decimalSeparator = ".", numberOfDecimalPlaces = 2))
     private BigDecimal transactionValue;
 
     @PositionalField(length = 20)

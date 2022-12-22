@@ -18,8 +18,7 @@ public class PaddingGenerator {
     }
 
     private static int identifyNumberOfZerosBefore(PositionalFieldVO positionalFieldVO, String rawPojoValueAsString) {
-        int length = countDecimalSeparatorCaseItExists(positionalFieldVO);
-        int numberOfCharactersUsedByTheNumber = rawPojoValueAsString.length() + length;
+        int numberOfCharactersUsedByTheNumber = rawPojoValueAsString.length();
         int numberOfZerosBefore = positionalFieldVO.getLength() - numberOfCharactersUsedByTheNumber;
         return numberOfZerosBefore > 0 ? numberOfZerosBefore : 0;
     }

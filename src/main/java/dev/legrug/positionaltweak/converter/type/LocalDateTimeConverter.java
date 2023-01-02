@@ -18,7 +18,11 @@ public class LocalDateTimeConverter implements Converter<LocalDateTime> {
     @Override public String toPositional(LocalDateTime pojoFieldValue, PositionalFieldVO positionalFieldVO)
     {
         checkIfThereIsPattern(positionalFieldVO);
-        return DateTimeFormatter.ofPattern(positionalFieldVO.getPattern()).format(pojoFieldValue);
+        String format = DateTimeFormatter.ofPattern(positionalFieldVO.getPattern()).format(pojoFieldValue);
+
+        SizeChecker.checkSizes(format, positionalFieldVO);
+
+        return format;
     }
 
     private void checkIfThereIsPattern(PositionalFieldVO positionalFieldVO)

@@ -4,11 +4,8 @@ import dev.legrug.positionaltweak.converter.Converter;
 import dev.legrug.positionaltweak.exception.PositionalTweakException;
 import dev.legrug.positionaltweak.parser.vo.PositionalFieldVO;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class LocalDateConverter implements Converter<LocalDate> {
 
@@ -21,7 +18,10 @@ public class LocalDateConverter implements Converter<LocalDate> {
     @Override public String toPositional(LocalDate pojoFieldValue, PositionalFieldVO positionalFieldVO)
     {
         checkIfThereIsPattern(positionalFieldVO);
-        return DateTimeFormatter.ofPattern(positionalFieldVO.getPattern()).format(pojoFieldValue);
+        String value = DateTimeFormatter.ofPattern(positionalFieldVO.getPattern()).format(pojoFieldValue);
+        SizeChecker.checkSizes(value, positionalFieldVO);
+
+        return value;
     }
 
     private void checkIfThereIsPattern(PositionalFieldVO positionalFieldVO)

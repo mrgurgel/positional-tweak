@@ -22,7 +22,10 @@ public class IntegerConverter implements Converter<Integer> {
         if(pojoFieldValue == null) {
             pojoFieldValue = 0;
         }
-        return PaddingGenerator.generateZeros(positionalFieldVO,pojoFieldValue.toString()) + pojoFieldValue.toString();
+        String value = PaddingGenerator.generateZeros(positionalFieldVO, pojoFieldValue.toString()) + pojoFieldValue;
+        SizeChecker.checkSizes(value, positionalFieldVO);
+
+        return value;
     }
 
 }

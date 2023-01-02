@@ -26,7 +26,11 @@ public class StringConverter implements Converter<String>
         if(pojoFieldValue == null){
             pojoFieldValue = " ";
         }
-        return pojoFieldValue + PaddingGenerator.generateBlankSpaces(positionalFieldVO, pojoFieldValue);
+        String positionalValue = pojoFieldValue + PaddingGenerator.generateBlankSpaces(positionalFieldVO, pojoFieldValue);
+        SizeChecker.checkSizes(positionalValue, positionalFieldVO);
+        return positionalValue;
     }
+
+
 
 }

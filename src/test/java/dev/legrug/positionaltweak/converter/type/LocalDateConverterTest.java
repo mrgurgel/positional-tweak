@@ -1,8 +1,10 @@
 package dev.legrug.positionaltweak.converter.type;
 
+import dev.legrug.positionaltweak.exception.PositionalTweakException;
 import dev.legrug.positionaltweak.parser.vo.PositionalFieldVO;
 import junit.framework.TestCase;
 import org.junit.Assert;
+import org.junit.Test;
 
 import java.time.LocalDate;
 
@@ -28,9 +30,26 @@ public class LocalDateConverterTest extends TestCase {
                 return "yyyyMMdd";
             }
 
+            @Override
+            public int getLength() {
+                return 8;
+            }
         };
         String dateAsPosicional = new LocalDateConverter().toPositional(LocalDate.of(2022, 11, 17), positionalFieldVO);
         Assert.assertEquals("20221117", dateAsPosicional);
+
+    }
+
+    public void testToPositionalOverSize() throws PositionalTweakException {
+        PositionalFieldVO positionalFieldVO = new PositionalFieldVO(null) {
+            @Override
+            public String getPattern() {
+                return "yyyyMMdd";
+            }
+        };
+
+        Assert.assertThrows(PositionalTweakException.class, () -> new LocalDateConverter().toPositional(LocalDate.of(2022, 11, 17), positionalFieldVO));
+
 
     }
 }

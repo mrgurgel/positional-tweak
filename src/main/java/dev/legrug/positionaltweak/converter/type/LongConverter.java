@@ -16,6 +16,9 @@ public class LongConverter implements Converter<Long> {
         if(pojoFieldValue == null) {
             pojoFieldValue = 0L;
         }
-        return PaddingGenerator.generateZeros(positionalFieldVO,pojoFieldValue.toString()) + pojoFieldValue;
+
+        String positionalValue = PaddingGenerator.generateZeros(positionalFieldVO, pojoFieldValue.toString()) + pojoFieldValue;
+        SizeChecker.checkSizes(positionalValue, positionalFieldVO);
+        return positionalValue;
     }
 }

@@ -49,7 +49,10 @@ public class BigDecimalConverter implements Converter<BigDecimal> {
         String rawPojoValueAsString = pojoFieldValue.setScale(positionalFieldVO.getPositionalMonetaryVO().getNumberOfDecimalPlaces()).toPlainString()
                 .replace(DEFAULT_DECIMA_SEPARATOR_WHEN_TO_STRING, positionalFieldVO.getPositionalMonetaryVO().getDecimalSeparator());
         String numberOfZerosBefore = PaddingGenerator.generateZeros(positionalFieldVO, rawPojoValueAsString);
-        return numberOfZerosBefore + rawPojoValueAsString;
+        String value = numberOfZerosBefore + rawPojoValueAsString;
+        SizeChecker.checkSizes(value, positionalFieldVO);
+
+        return value;
     }
 
 

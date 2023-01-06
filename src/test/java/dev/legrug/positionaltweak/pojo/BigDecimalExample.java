@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 
 public class BigDecimalExample {
 
+    public static final String TEST = "";
 
     @PositionalField(length = 15, monetaryInfo =
     @PositionalMonetary(decimalSeparator = "", numberOfDecimalPlaces = 2))

@@ -4,13 +4,13 @@ import dev.legrug.positionaltweak.annotation.PositionalField;
 import dev.legrug.positionaltweak.exception.PositionalTweakException;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.stream.Stream;
 
 /**
  * APIs front end.
- * 
- * @author Marcio Gurgel (marcio.rga@gmail.com)
  *
+ * @author Marcio Gurgel (marcio.rga@gmail.com)
  */
 public class PositionalTweak {
 
@@ -31,8 +31,10 @@ public class PositionalTweak {
             StringBuilder positionalStringValue = new StringBuilder(positionalString);
 
             Stream.of(pojoClass.getDeclaredFields()).forEach(field -> {
-                PositionalFieldParser positionalFieldParser = new PositionalFieldParser(field, pojoInstance, positionalStringValue);
-                positionalFieldParser.fillFieldValue();
+                if (!Modifier.isStatic(field.getModifiers())) {
+                    PositionalFieldParser positionalFieldParser = new PositionalFieldParser(field, pojoInstance, positionalStringValue);
+                    positionalFieldParser.fillFieldValue();
+                }
 
             });
 
@@ -50,12 +52,13 @@ public class PositionalTweak {
             StringBuilder positionalStringValue = new StringBuilder();
 
             Stream.of(pojoInstance.getClass().getDeclaredFields()).forEach(field -> {
-                PositionalFieldParser positionalFieldParser = new PositionalFieldParser(field, pojoInstance, positionalStringValue);
-                positionalFieldParser.generatePositional();
+                if (!Modifier.isStatic(field.getModifiers())) {
+                    PositionalFieldParser positionalFieldParser = new PositionalFieldParser(field, pojoInstance, positionalStringValue);
+                    positionalFieldParser.generatePositional();
+                }
             });
             return positionalStringValue.toString();
-        }
-        catch (IllegalArgumentException | SecurityException e) {
+        } catch (IllegalArgumentException | SecurityException e) {
             throw new PositionalTweakException("There was an excepton handling the request. See original the exception.", e);
         }
 
